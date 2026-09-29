@@ -605,7 +605,7 @@ export default function FlashcardsPage() {
 
       <main className="min-w-0 space-y-7">
         <div>
-          <p className="text-xs text-zinc-600">Interview preparation</p>
+          <p className="text-xs text-zinc-400">Interview preparation</p>
 
           <div className="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
@@ -619,7 +619,7 @@ export default function FlashcardsPage() {
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="text-xs text-zinc-600">
+              <div className="text-xs text-zinc-400">
                 <span className="text-zinc-300">{studiedCount}</span> of{" "}
                 <span className="text-zinc-300">{flashcards.length}</span>{" "}
                 studied
@@ -631,7 +631,7 @@ export default function FlashcardsPage() {
                   setShowCreate(true);
                   setError(null);
                 }}
-                className="flex items-center gap-2 rounded-md bg-white px-3 py-2 text-xs font-medium text-black transition-colors hover:bg-zinc-200"
+                className="flex cursor-pointer items-center gap-2 rounded-md bg-white px-3 py-2 text-xs font-medium text-black transition-colors hover:bg-zinc-200"
               >
                 <Plus size={14} />
                 Add flashcard
@@ -663,7 +663,7 @@ export default function FlashcardsPage() {
                 <p className="text-sm font-medium text-zinc-200">
                   New flashcard
                 </p>
-                <p className="mt-1 text-xs text-zinc-600">
+                <p className="mt-1 text-xs text-zinc-400">
                   Add a custom concept to this interview kit.
                 </p>
               </div>
@@ -677,7 +677,7 @@ export default function FlashcardsPage() {
                     back: "",
                   });
                 }}
-                className="text-zinc-600 transition-colors hover:text-zinc-300"
+                className="text-zinc-400 transition-colors hover:text-zinc-300"
               >
                 <X size={16} />
               </button>
@@ -685,7 +685,7 @@ export default function FlashcardsPage() {
 
             <div className="space-y-4 px-5 py-5">
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                   Front
                 </label>
 
@@ -699,12 +699,12 @@ export default function FlashcardsPage() {
                   }
                   placeholder="Question or concept..."
                   rows={3}
-                  className="w-full resize-none rounded-md border border-white/20 bg-[#08090a] px-3 py-3 text-sm leading-6 text-zinc-300 outline-none placeholder:text-zinc-500 focus:border-white/40"
+                  className="w-full resize-none rounded-md border border-white/20 bg-[#08090a] px-3 py-3 text-sm leading-6 text-zinc-300 outline-none placeholder:text-zinc-400 focus:border-white/40"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                   Back
                 </label>
 
@@ -718,7 +718,7 @@ export default function FlashcardsPage() {
                   }
                   placeholder="Answer or explanation..."
                   rows={5}
-                  className="w-full resize-none rounded-md border border-white/20 bg-[#08090a] px-3 py-3 text-sm leading-6 text-zinc-300 outline-none placeholder:text-zinc-500 focus:border-white/40"
+                  className="w-full resize-none rounded-md border border-white/20 bg-[#08090a] px-3 py-3 text-sm leading-6 text-zinc-300 outline-none placeholder:text-zinc-400 focus:border-white/40"
                 />
               </div>
 
@@ -732,7 +732,7 @@ export default function FlashcardsPage() {
                       back: "",
                     });
                   }}
-                  className="rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300"
+                  className="rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300"
                 >
                   Cancel
                 </button>
@@ -754,11 +754,11 @@ export default function FlashcardsPage() {
         {flashcards.length > 0 && (
           <div className="rounded-lg border border-white/20 bg-[#000000] px-5 py-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+              <span className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                 Review progress
               </span>
 
-              <span className="text-xs text-zinc-600">
+              <span className="text-xs text-zinc-400">
                 {studiedPercentage}%
               </span>
             </div>
@@ -775,7 +775,7 @@ export default function FlashcardsPage() {
         <div className="relative">
           <Search
             size={15}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
           />
 
           <input
@@ -786,14 +786,14 @@ export default function FlashcardsPage() {
               setRevealed(false);
             }}
             placeholder="Search flashcards..."
-            className="h-10 w-full rounded-md border border-white/20 bg-[#000000] pl-9 pr-3 text-sm text-zinc-300 outline-none placeholder:text-zinc-500 focus:border-white/40"
+            className="h-10 w-full rounded-md border border-white/20 bg-[#000000] pl-9 pr-3 text-sm text-zinc-300 outline-none placeholder:text-zinc-400 focus:border-white/40"
           />
         </div>
 
         {currentCard ? (
           <div className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-3 px-1">
-              <span className="font-mono text-[11px] text-zinc-500">
+              <span className="font-mono text-[11px] text-zinc-400">
                 {String(currentIndex + 1).padStart(2, "0")} /{" "}
                 {String(filteredFlashcards.length).padStart(2, "0")}
               </span>
@@ -803,7 +803,7 @@ export default function FlashcardsPage() {
                   <Pin size={13} className="fill-zinc-500 text-zinc-300" />
                 )}
 
-                <span className="text-xs capitalize text-zinc-500">
+                <span className="text-xs capitalize text-zinc-400">
                   {currentCard.origin}
                 </span>
               </div>
@@ -813,7 +813,7 @@ export default function FlashcardsPage() {
               {editingId === currentCard.id ? (
                 <div className="space-y-5 px-6 py-6 sm:px-10">
                   <div>
-                    <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                    <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                       Front
                     </label>
 
@@ -831,7 +831,7 @@ export default function FlashcardsPage() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                    <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                       Back
                     </label>
 
@@ -852,7 +852,7 @@ export default function FlashcardsPage() {
                     <button
                       type="button"
                       onClick={cancelEditing}
-                      className="flex items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300"
+                      className="flex items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300"
                     >
                       <X size={13} />
                       Cancel
@@ -873,12 +873,12 @@ export default function FlashcardsPage() {
                 <>
                   <div className="px-6 py-10 sm:px-10 sm:py-14">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded border border-white/20 px-2 py-1 text-xs uppercase tracking-[0.08em] text-zinc-600">
+                      <span className="rounded border border-white/20 px-2 py-1 text-xs uppercase tracking-[0.08em] text-zinc-400">
                         Flashcard
                       </span>
 
                       {currentCard.origin !== "generated" && (
-                        <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-600">
+                        <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-400">
                           {currentCard.origin}
                         </span>
                       )}
@@ -890,7 +890,7 @@ export default function FlashcardsPage() {
 
                     {revealed && (
                       <div className="mt-10 border-t border-white/20 pt-8">
-                        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                           Answer
                         </p>
 
@@ -904,7 +904,7 @@ export default function FlashcardsPage() {
                       <button
                         type="button"
                         onClick={() => setRevealed(true)}
-                        className="mt-10 flex items-center gap-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300"
+                        className="mt-10 cursor-pointer flex items-center gap-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300"
                       >
                         <ChevronDown size={14} />
                         Reveal answer
@@ -914,7 +914,7 @@ export default function FlashcardsPage() {
 
                   {revealed && (
                     <div className="border-t border-white/20 px-6 py-5 sm:px-10">
-                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                         How well did you know this?
                       </p>
 
@@ -933,7 +933,7 @@ export default function FlashcardsPage() {
                                 "rounded-md border px-3 py-2 text-xs transition-colors",
                                 selected
                                   ? "border-white/[0.16] bg-white/[0.06] text-zinc-200"
-                                  : "border-white/20 text-zinc-600 hover:border-white/[0.12] hover:text-zinc-300",
+                                  : "border-white/20 text-zinc-400 hover:border-white/[0.12] hover:text-zinc-300",
                                 saving ? "cursor-wait opacity-60" : "",
                               ].join(" ")}
                             >
@@ -954,7 +954,7 @@ export default function FlashcardsPage() {
                       type="button"
                       disabled={saving}
                       onClick={() => startEditing(currentCard)}
-                      className="flex items-center gap-2 rounded-md px-2.5 py-2 text-xs text-zinc-600 transition-colors hover:bg-white/[0.03] hover:text-zinc-300 disabled:opacity-40"
+                      className="flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-2 text-xs text-zinc-400 transition-colors hover:bg-white/[0.03] hover:text-zinc-300 disabled:opacity-40"
                     >
                       <Pencil size={13} />
                       Edit
@@ -965,10 +965,10 @@ export default function FlashcardsPage() {
                       disabled={saving}
                       onClick={() => togglePin(currentCard)}
                       className={[
-                        "flex items-center gap-2 rounded-md px-2.5 py-2 text-xs transition-colors hover:bg-white/[0.03]",
+                        "flex items-center cursor-pointer gap-2 rounded-md px-2.5 py-2 text-xs transition-colors hover:bg-white/[0.03]",
                         currentCard.pinned
                           ? "text-zinc-300"
-                          : "text-zinc-600 hover:text-zinc-300",
+                          : "text-zinc-400 hover:text-zinc-300",
                       ].join(" ")}
                     >
                       <Pin
@@ -982,7 +982,7 @@ export default function FlashcardsPage() {
                       type="button"
                       disabled={saving || deletingId === currentCard.id}
                       onClick={() => deleteFlashcard(currentCard)}
-                      className="flex items-center gap-2 rounded-md px-2.5 py-2 text-xs text-zinc-600 transition-colors hover:bg-red-500/[0.04] hover:text-red-400 disabled:opacity-40"
+                      className="flex cursor-pointer items-center gap-2 rounded-md px-2.5 py-2 text-xs text-zinc-400 transition-colors hover:bg-red-500/[0.04] hover:text-red-400 disabled:opacity-40"
                     >
                       <Trash2 size={13} />
                       {deletingId === currentCard.id ? "Deleting..." : "Delete"}
@@ -1000,7 +1000,7 @@ export default function FlashcardsPage() {
                       }
                       onClick={() => moveFlashcard(currentCard.id, -1)}
                       title="Move up"
-                      className="rounded-md p-2 text-zinc-600 transition-colors hover:bg-white/[0.03] hover:text-zinc-300 disabled:opacity-20"
+                      className="rounded-md p-2 text-zinc-400 transition-colors hover:bg-white/[0.03] hover:text-zinc-300 disabled:opacity-20"
                     >
                       <ArrowUp size={14} />
                     </button>
@@ -1016,7 +1016,7 @@ export default function FlashcardsPage() {
                       }
                       onClick={() => moveFlashcard(currentCard.id, 1)}
                       title="Move down"
-                      className="rounded-md p-2 text-zinc-600 transition-colors hover:bg-white/[0.03] hover:text-zinc-300 disabled:opacity-20"
+                      className="rounded-md p-2 text-zinc-400 transition-colors hover:bg-white/[0.03] hover:text-zinc-300 disabled:opacity-20"
                     >
                       <ArrowDown size={14} />
                     </button>
@@ -1030,7 +1030,7 @@ export default function FlashcardsPage() {
                 type="button"
                 onClick={goPrevious}
                 disabled={currentIndex === 0}
-                className="flex items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300 disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex cursor-pointeritems-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <ArrowLeft size={14} />
                 Previous
@@ -1040,7 +1040,7 @@ export default function FlashcardsPage() {
                 type="button"
                 onClick={goNext}
                 disabled={currentIndex === filteredFlashcards.length - 1}
-                className="flex items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300 disabled:cursor-not-allowed disabled:opacity-30"
+                className="flex  cursor-pointer items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300 disabled:cursor-not-allowed disabled:opacity-30"
               >
                 Next
                 <ArrowRight size={14} />
@@ -1068,7 +1068,7 @@ export default function FlashcardsPage() {
                     setSearch("");
                     setCurrentIndex(0);
                   }}
-                  className="text-xs text-zinc-600 transition-colors hover:text-zinc-300"
+                  className="text-xs text-zinc-400 transition-colors hover:text-zinc-300"
                 >
                   Clear search
                 </button>
@@ -1091,7 +1091,7 @@ export default function FlashcardsPage() {
             <button
               type="button"
               onClick={resetReview}
-              className="flex items-center gap-2 text-xs text-zinc-500 transition-colors hover:text-zinc-400"
+              className="flex cursor-pointer items-center gap-2 text-xs text-zinc-400 transition-colors hover:text-zinc-400"
             >
               <RotateCcw size={13} />
               Start review again

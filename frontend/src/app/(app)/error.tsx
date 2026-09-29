@@ -25,7 +25,7 @@ export default function AppError({
           Something went wrong
         </h1>
 
-        <p className="mt-2 text-xs leading-5 text-zinc-600">
+        <p className="mt-2 text-xs leading-5 text-zinc-400">
           Prepora couldn&apos;t load this part of the application. Try again,
           and if the problem continues, reload the page.
         </p>

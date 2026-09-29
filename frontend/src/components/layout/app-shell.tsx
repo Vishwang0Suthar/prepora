@@ -32,11 +32,9 @@ export function AppShell({ children }: AppShellProps) {
       <div className="lg:pl-[248px]">
         <Topbar onMenuClick={() => setSidebarOpen(true)} />
 
-        <main className="min-h-[calc(100vh-64px)]">
-          <div className="mx-auto w-full max-w-[1440px] px-5 py-6 sm:px-8 lg:px-10">
-            {children}
-          </div>
-        </main>
+        <section className="min-h-[calc(100vh-64px)]">
+          <div className="mx-auto w-full max-w-[1440px] py-6">{children}</div>
+        </section>
       </div>
     </div>
   );

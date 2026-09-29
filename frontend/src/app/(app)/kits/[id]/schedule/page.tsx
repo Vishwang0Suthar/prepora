@@ -159,8 +159,8 @@ export default function SchedulePage() {
       <KitSidebar kitId={kitId} />
 
       <main className="min-w-0 space-y-8">
-        <header>
-          <p className="text-xs text-zinc-600">Preparation plan</p>
+        <div>
+          <p className="text-xs text-zinc-400">Preparation plan</p>
 
           <h1 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
             Schedule
@@ -170,9 +170,9 @@ export default function SchedulePage() {
             Follow the generated plan and use your practice progress to see how
             much preparation is complete.
           </p>
-        </header>
+        </div>
 
-        <section className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           <SummaryCard
             icon={<CalendarDays size={15} />}
             label="Days"
@@ -190,7 +190,7 @@ export default function SchedulePage() {
             label="Complete"
             value={`${overallProgress}%`}
           />
-        </section>
+        </div>
 
         {schedule.length === 0 ? (
           <EmptyState
@@ -219,45 +219,63 @@ export default function SchedulePage() {
                   : 0;
 
               return (
-                <section
+                <div
                   key={day.day}
                   className="rounded-lg border border-white/20 bg-[#000000]"
                 >
                   <div className="border-b border-white/20 px-5 py-5">
-                    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
-                      <div className="flex gap-4">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/20 bg-white/[0.02] text-xs font-medium text-zinc-300">
-                          {day.day}
-                        </div>
-
-                        <div>
-                          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
-                            Day {day.day}
-                          </p>
-
-                          <h2 className="mt-1 text-sm font-medium text-zinc-300">
-                            {day.focus || "Interview preparation"}
-                          </h2>
-                        </div>
+                    <div className="grid grid-cols-[44px_minmax(0,1fr)_220px] items-start gap-4">
+                      {/* Day */}
+                      <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/20 bg-white text-sm font-medium text-black">
+                        {day.day}
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs text-zinc-600">
-                        <span className="flex items-center gap-1.5">
-                          <Clock3 size={13} />
-                          {day.minutes} min
-                        </span>
+                      {/* Focus */}
+                      <div className="min-w-0 pt-0.5">
+                        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-zinc-300">
+                          {`Day ${day.day} · Today's focus`}
+                        </p>
 
-                        <span>
-                          {completedForDay}/{dayQuestions.length}
-                        </span>
+                        <h2 className="mt-1.5 max-w-3xl text-md font-medium leading-6 text-white">
+                          {day.focus || "Interview preparation"}
+                        </h2>
+                      </div>
 
-                        <span>{dayProgress}%</span>
+                      {/* Stats */}
+                      <div className="flex justify-end gap-2">
+                        <div className="min-w-[68px] rounded-md border border-white/10 bg-white px-3 py-2 text-center">
+                          <p className="text-sm font-medium text-black">
+                            {day.minutes}
+                          </p>
+                          <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-600">
+                            min
+                          </p>
+                        </div>
+
+                        <div className="min-w-[68px] rounded-md border border-white/10 bg-white px-3 py-2 text-center">
+                          <p className="text-sm font-medium text-black">
+                            {completedForDay}/{dayQuestions.length}
+                          </p>
+                          <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-600">
+                            done
+                          </p>
+                        </div>
+
+                        <div className="min-w-[60px] rounded-md border border-white/10 bg-white px-3 py-2 text-center">
+                          <p className="text-sm font-medium text-black">
+                            {dayProgress}%
+                          </p>
+                          <p className="mt-0.5 text-[10px] uppercase tracking-wider text-zinc-600">
+                            progress
+                          </p>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="mt-5 h-1 overflow-hidden rounded-full bg-zinc-900">
+                    {/* Progress */}
+                    <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
                       <div
-                        className="h-full rounded-full bg-zinc-500 transition-all"
+                        className="h-full rounded-full bg-zinc-300 transition-all duration-500"
                         style={{
                           width: `${dayProgress}%`,
                         }}
@@ -276,7 +294,7 @@ export default function SchedulePage() {
                           onClick={() => {
                             window.location.href = `/kits/${kitId}/practice?question=${question.id}`;
                           }}
-                          className="flex w-full items-start gap-4 px-5 py-4 text-left transition-colors hover:bg-white/[0.02]"
+                          className="flex w-full items-start gap-4 px-5 py-4 text-left transition-colors cursor-pointer duration-300 hover:bg-zinc-800"
                         >
                           <div
                             className={[
@@ -293,20 +311,20 @@ export default function SchedulePage() {
                             <p
                               className={[
                                 "text-sm leading-6",
-                                completed ? "text-zinc-600" : "text-zinc-400",
+                                completed ? "text-white " : "text-zinc-400",
                               ].join(" ")}
                             >
                               {question.prompt}
                             </p>
 
                             <div className="mt-2 flex flex-wrap gap-2">
-                              <span className="text-xs capitalize text-zinc-500">
+                              <span className="text-xs capitalize text-zinc-400">
                                 {question.category}
                               </span>
 
                               <span className="text-xs text-zinc-800">•</span>
 
-                              <span className="text-xs text-zinc-500">
+                              <span className="text-xs text-zinc-400">
                                 Difficulty {question.difficulty}
                               </span>
                             </div>
@@ -325,7 +343,7 @@ export default function SchedulePage() {
                         </div>
 
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm text-zinc-600">
+                          <p className="text-sm text-zinc-400">
                             Question unavailable
                           </p>
 
@@ -340,14 +358,14 @@ export default function SchedulePage() {
 
                   {day.question_ids.length === 0 && (
                     <div className="rounded-md border border-dashed border-white/20 py-10 text-center">
-                      <Target size={18} className="mx-auto text-zinc-500" />
+                      <Target size={18} className="mx-auto text-zinc-400" />
 
-                      <p className="mt-3 text-xs text-zinc-600">
+                      <p className="mt-3 text-xs text-zinc-400">
                         No questions assigned to this day.
                       </p>
                     </div>
                   )}
-                </section>
+                </div>
               );
             })}
           </div>
@@ -368,7 +386,7 @@ function SummaryCard({
 }) {
   return (
     <div className="rounded-lg border border-white/20 bg-[#000000] px-4 py-4">
-      <div className="flex items-center gap-2 text-zinc-500">
+      <div className="flex items-center gap-2 text-zinc-400">
         {icon}
 
         <span className="text-xs font-semibold uppercase tracking-[0.12em]">

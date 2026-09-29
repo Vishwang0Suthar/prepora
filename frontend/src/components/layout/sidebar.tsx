@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Settings, BriefcaseBusiness, X } from "lucide-react";
+import Image from "next/image";
 
 interface SidebarProps {
   open: boolean;
@@ -50,16 +51,17 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         ].join(" ")}
       >
         <div className="flex h-16 items-center justify-between border-b border-white/20 px-5">
-          <Link
-            href="/dashboard"
-            onClick={onClose}
-            className="flex items-center gap-3"
-          >
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-[13px] font-bold text-black">
-              P
-            </div>
+          <Link href="/" className="flex items-center gap-5">
+            <Image
+              src="/svg/logo.svg"
+              alt="Prepora"
+              width={32}
+              height={32}
+              className="h-8 lg:h-16 w-8 lg:w-16"
+              priority
+            />
 
-            <span className="text-[15px] font-semibold tracking-[-0.02em]">
+            <span className="text-xl font-semibold tracking-[-0.02em] text-zinc-100">
               Prepora
             </span>
           </Link>
@@ -75,7 +77,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         </div>
 
         <nav className="flex-1 px-3 py-5">
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
             Workspace
           </p>
 
@@ -115,7 +117,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
               Interview preparation
             </p>
 
-            <p className="mt-1 text-[11px] leading-4 text-zinc-600">
+            <p className="mt-1 text-[11px] leading-4 text-zinc-400">
               Build focused preparation kits from any job description.
             </p>
           </div>

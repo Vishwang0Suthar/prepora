@@ -115,17 +115,17 @@ export default function NewKitPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <section className="mx-auto py-6">
       <Link
         href="/dashboard"
-        className="mb-8 inline-flex items-center gap-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300"
+        className="mb-8 inline-flex items-center gap-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300"
       >
         <ArrowLeft size={14} />
         Back to dashboard
       </Link>
 
       <div className="mb-10">
-        <div className="mb-3 flex items-center gap-2 text-xs font-medium text-zinc-600">
+        <div className="mb-3 flex items-center gap-2 text-xs font-medium text-zinc-400">
           <Sparkles size={13} />
           Interview kit
         </div>
@@ -151,7 +151,7 @@ export default function NewKitPage() {
         <button
           type="button"
           disabled
-          className="flex-1 cursor-not-allowed rounded-md px-4 py-2.5 text-xs font-medium text-zinc-500"
+          className="flex-1 cursor-not-allowed rounded-md px-4 py-2.5 text-xs font-medium text-zinc-400"
         >
           Multiple kits
           <span className="ml-2 rounded bg-white/[0.05] px-1.5 py-0.5 text-[9px] uppercase tracking-wide">
@@ -161,13 +161,13 @@ export default function NewKitPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <section className="rounded-lg border border-white/20 bg-[#000000]">
+        <div className="rounded-lg border border-white/20 bg-[#000000]">
           <div className="border-b border-white/20 px-5 py-4">
-            <h2 className="text-sm font-medium text-zinc-200">
+            <h2 className="text-md font-medium text-zinc-200">
               Role information
             </h2>
 
-            <p className="mt-1 text-xs text-zinc-600">
+            <p className="mt-1 text-xs text-zinc-400">
               Basic information about the position.
             </p>
           </div>
@@ -209,15 +209,15 @@ export default function NewKitPage() {
               placeholder="e.g. Remote / Bengaluru"
             />
           </div>
-        </section>
+        </div>
 
-        <section className="rounded-lg border border-white/20 bg-[#000000]">
+        <div className="rounded-lg border border-white/20 bg-[#000000]">
           <div className="border-b border-white/20 px-5 py-4">
-            <h2 className="text-sm font-medium text-zinc-200">
+            <h2 className="text-md font-medium text-zinc-200">
               Job description
             </h2>
 
-            <p className="mt-1 text-xs text-zinc-600">
+            <p className="mt-1 text-xs text-zinc-400">
               Paste the complete job description for the most accurate
               preparation.
             </p>
@@ -238,25 +238,25 @@ export default function NewKitPage() {
                 minLength={50}
                 rows={14}
                 placeholder="Paste the job description here..."
-                className="w-full resize-y rounded-md border border-white/20 bg-[#08090a] px-4 py-3 text-sm leading-6 text-zinc-200 outline-none placeholder:text-zinc-500 transition-colors focus:border-white/[0.18]"
+                className="w-full resize-y rounded-md border border-white/20 bg-[#08090a] px-4 py-3 text-sm leading-6 text-zinc-200 outline-none placeholder:text-zinc-400 transition-colors focus:border-white/[0.18]"
               />
             </label>
 
-            <div className="mt-2 flex justify-between text-[11px] text-zinc-500">
+            <div className="mt-2 flex justify-between text-[11px] text-zinc-400">
               <span>Minimum 50 characters</span>
 
               <span>{jdText.length.toLocaleString()} characters</span>
             </div>
           </div>
-        </section>
+        </div>
 
-        <section className="rounded-lg border border-white/20 bg-[#000000]">
+        <div className="rounded-lg border border-white/20 bg-[#000000]">
           <div className="border-b border-white/20 px-5 py-4">
-            <h2 className="text-sm font-medium text-zinc-200">
+            <h2 className="text-md font-medium text-zinc-200">
               Preparation timeline
             </h2>
 
-            <p className="mt-1 text-xs text-zinc-600">
+            <p className="mt-1 text-xs text-zinc-400">
               How many days do you have before the interview?
             </p>
           </div>
@@ -279,7 +279,7 @@ export default function NewKitPage() {
                   className="w-full accent-white"
                 />
 
-                <div className="mt-2 flex justify-between text-xs text-zinc-500">
+                <div className="mt-2 flex justify-between text-xs text-zinc-400">
                   <span>1 day</span>
                   <span>30 days</span>
                   <span>60 days</span>
@@ -291,11 +291,11 @@ export default function NewKitPage() {
                   {daysAvailable}
                 </span>
 
-                <span className="ml-1 text-xs text-zinc-600">days</span>
+                <span className="ml-1 text-xs text-zinc-400">days</span>
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         {error && (
           <ErrorState
@@ -324,7 +324,7 @@ export default function NewKitPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="flex h-10 items-center justify-center gap-2 rounded-md bg-white px-5 text-xs font-medium text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md bg-white px-5 text-xs font-medium text-black transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {submitting ? (
               <>
@@ -341,7 +341,7 @@ export default function NewKitPage() {
           </button>
         </div>
       </form>
-    </div>
+    </section>
   );
 }
 
@@ -378,7 +378,7 @@ function Field({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         required={required}
-        className="h-10 w-full rounded-md border border-white/20 bg-[#08090a] px-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-500 transition-colors focus:border-white/[0.18]"
+        className="h-10 w-full rounded-md border border-white/20 bg-[#08090a] px-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-400 transition-colors focus:border-white/[0.18]"
       />
     </label>
   );

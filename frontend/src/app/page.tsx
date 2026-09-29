@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -27,19 +27,27 @@ export default function Home() {
       />
 
       {/* Navigation */}
-      <header className="sticky top-0 z-50    border-white/20 bg-black/90 backdrop-blur-md">
+      <header className="sticky top-0 z-50    border-white/20 bg-black border-b backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-          <Link
-            href="/"
-            className="text-sm font-semibold tracking-[-0.02em] text-zinc-100"
-          >
-            Prepora
+          <Link href="/" className="flex items-center gap-5">
+            <Image
+              src="/svg/logo.svg"
+              alt="Prepora"
+              width={32}
+              height={32}
+              className="h-8 lg:h-16 w-8 lg:w-16"
+              priority
+            />
+
+            <span className="text-xl font-semibold tracking-[-0.02em] text-zinc-100">
+              Prepora
+            </span>
           </Link>
 
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-2 lg:gap-6">
             <Link
               href="/login"
-              className="rounded-md px-3 py-2 text-sm text-zinc-500 transition-colors hover:text-zinc-200"
+              className="rounded-md px-3 py-2 text-sm text-zinc-400 transition-colors hover:text-zinc-200"
             >
               Sign in
             </Link>
@@ -80,7 +88,7 @@ export default function Home() {
 
             {/* Hero title */}
             <div>
-              <p className="mb-5 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+              <p className="mb-5 text-xs font-medium uppercase tracking-[0.18em] text-zinc-400">
                 From job description to interview-ready
               </p>
 
@@ -104,7 +112,7 @@ export default function Home() {
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/register"
-                className="group inline-flex h-11 items-center justify-center gap-2 rounded-md bg-white px-5 text-xs font-medium text-black transition-all hover:bg-zinc-200"
+                className="group inline-flex h-11 items-center hover:invert duration-300 justify-center gap-2 rounded-md bg-white px-5 text-xs font-medium text-black transition-all hover:bg-zinc-200"
               >
                 Build my interview plan
                 <ArrowRight
@@ -115,7 +123,7 @@ export default function Home() {
 
               <Link
                 href="/login"
-                className="inline-flex h-11 items-center justify-center rounded-md border border-white/20 px-5 text-xs text-zinc-400 transition-colors hover:border-white/40 hover:text-zinc-200"
+                className="inline-flex h-12 items-center justify-center rounded-md border border-white/20 px-5 text-xs text-zinc-400 transition-colors hover:border-white/40 hover:text-zinc-200"
               >
                 I already have an account
               </Link>
@@ -123,21 +131,15 @@ export default function Home() {
 
             {/* Product flow */}
             <div className="mx-auto mt-14 flex max-w-3xl  items-center justify-center gap-2 flex-row sm:gap-3">
-              <FlowStep
-                label="Your job description"
-                icon={<FileText size={11} />}
-              />
+              <FlowStep label="Your job desc" icon={<FileText size={11} />} />
 
-              <ArrowRight className="hidden text-zinc-700 sm:block" size={15} />
+              <ArrowRight className="hidden text-zinc-300 sm:block" size={15} />
 
               <ProcessingStep />
 
-              <ArrowRight className="hidden text-zinc-700 sm:block" size={15} />
+              <ArrowRight className="hidden text-zinc-300 sm:block" size={15} />
 
-              <FlowStep
-                label="Your preparation plan"
-                icon={<Target size={14} />}
-              />
+              <FlowStep label="Your prep plan" icon={<Target size={14} />} />
             </div>
           </div>
 
@@ -182,7 +184,7 @@ export default function Home() {
                         className={`shrink-0 rounded-md px-2 py-1.5 text-[10px] sm:px-2.5 sm:py-2 sm:text-xs ${
                           index === 0
                             ? "bg-white/20 text-zinc-200"
-                            : "text-zinc-500"
+                            : "text-zinc-400"
                         }`}
                       >
                         {item}
@@ -195,7 +197,7 @@ export default function Home() {
                 <div className="p-4 sm:p-8">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-500 sm:text-xs">
+                      <p className="text-[10px] uppercase tracking-[0.12em] text-zinc-400 sm:text-xs">
                         Interview kit
                       </p>
 
@@ -203,7 +205,7 @@ export default function Home() {
                         Software Engineer
                       </h3>
 
-                      <p className="mt-1 truncate text-[10px] text-zinc-500 sm:text-xs">
+                      <p className="mt-1 truncate text-[10px] text-zinc-400 sm:text-xs">
                         Requirements · Questions · Practice
                       </p>
                     </div>
@@ -227,7 +229,7 @@ export default function Home() {
                         Preparation plan
                       </span>
 
-                      <span className="text-[10px] text-zinc-500 sm:text-xs">
+                      <span className="text-[10px] text-zinc-400 sm:text-xs">
                         5 days
                       </span>
                     </div>
@@ -238,7 +240,7 @@ export default function Home() {
                           key={day}
                           className="min-w-[58px] flex-1 border border-white/20 p-2 sm:min-w-0 sm:p-3"
                         >
-                          <span className="text-[9px] text-zinc-500 sm:text-xs">
+                          <span className="text-[9px] text-zinc-400 sm:text-xs">
                             DAY {day}
                           </span>
 
@@ -407,7 +409,7 @@ function FlowStep({
       className={`flex items-center gap-2 rounded-md border px-3 py-2.5 ${
         active
           ? "border-white/30 bg-white/[0.06] text-zinc-200"
-          : "border-white/20 bg-black text-zinc-500"
+          : "border-white/20 bg-black text-zinc-400"
       }`}
     >
       {icon}
@@ -419,9 +421,9 @@ function FlowStep({
 
 function ProcessingStep() {
   return (
-    <div className="group flex items-center gap-2 rounded-md border border-white/30 bg-white/[0.06] px-3 py-2.5 text-zinc-200">
+    <div className="group flex hover:-translate-y-1 hover:scale-105 duration-300 items-center gap-2 rounded-md border border-white/30 bg-white/[0.06] px-3 py-2.5 text-zinc-200">
       <span className="relative flex h-3.5 w-3.5 items-center justify-center">
-        <span className="absolute h-3.5 w-3.5 animate-ping rounded-full bg-zinc-500/20" />
+        <span className="absolute h-3.5 w-3.5 animate-ping rounded-full bg-white" />
         <span className="relative h-1.5 w-1.5 rounded-full bg-zinc-300" />
       </span>
 
@@ -441,7 +443,7 @@ function PipelineItem({
 }) {
   return (
     <div className="border-white/20 p-5 last:border-0 sm:border-r sm:last:border-r-0">
-      <div className="text-xs font-semibold tracking-[0.12em] text-zinc-500">
+      <div className="text-xs font-semibold tracking-[0.12em] text-zinc-400">
         {number}
       </div>
 
@@ -459,7 +461,7 @@ function PreviewStat({ value, label }: { value: string; label: string }) {
         {value}
       </p>
 
-      <p className="mt-1 truncate text-[9px] text-zinc-500 sm:text-xs">
+      <p className="mt-1 truncate text-[9px] text-zinc-400 sm:text-xs">
         {label}
       </p>
     </div>
@@ -495,7 +497,7 @@ function Feature({
         {description}
       </p>
 
-      <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-[0.12em] text-zinc-500 transition-colors group-hover:text-zinc-300">
+      <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-[0.12em] text-zinc-400 transition-colors group-hover:text-zinc-300">
         <Check size={11} />
         Role-specific
       </div>

@@ -258,7 +258,7 @@ export default function KitPage() {
             <span className="text-sm font-semibold text-red-400">!</span>
           </div>
 
-          <p className="mb-2 text-xs text-zinc-600">{kit.company}</p>
+          <p className="mb-2 text-xs text-zinc-400">{kit.company}</p>
 
           <h1 className="text-xl font-semibold text-white">
             Kit generation failed
@@ -270,7 +270,7 @@ export default function KitPage() {
           </p>
 
           {kit.error?.code && (
-            <p className="mt-3 font-mono text-[11px] text-zinc-500">
+            <p className="mt-3 font-mono text-[11px] text-zinc-400">
               {kit.error.code}
             </p>
           )}
@@ -316,7 +316,7 @@ export default function KitPage() {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <div className="mb-2 flex items-center gap-2 text-xs text-zinc-600">
+          <div className="mb-2 flex items-center gap-2 text-xs text-zinc-400">
             <span>{kit.company}</span>
 
             <span>/</span>
@@ -383,7 +383,7 @@ export default function KitPage() {
             {/* Company brief */}
             <div className="rounded-lg border border-white/20 bg-[#000000] p-6 ">
               <div className="mb-5">
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                   Company brief
                 </p>
 
@@ -401,16 +401,16 @@ export default function KitPage() {
             <div className="grid gap-px divide-white/[0.07] divide-x overflow-hidden bg-[#000000] rounded-lg border border-white/20  sm:grid-cols-3">
               <div className=" p-5 ">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-600">Requirements</span>
+                  <span className="text-xs text-zinc-400">Requirements</span>
 
-                  <Target size={15} className="text-zinc-500" />
+                  <Target size={15} className="text-zinc-400" />
                 </div>
 
                 <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-zinc-200">
                   {requirements.length}
                 </p>
 
-                <p className="mt-2 text-xs text-zinc-500">
+                <p className="mt-2 text-xs text-zinc-400">
                   Role requirements analyzed
                 </p>
               </div>
@@ -420,11 +420,11 @@ export default function KitPage() {
                 className="group bg-[#000000] p-5 transition-colors hover:bg-white/[0.02]"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-600">Questions</span>
+                  <span className="text-xs text-zinc-400">Questions</span>
 
                   <MessageSquare
                     size={15}
-                    className="text-zinc-500 transition-colors group-hover:text-zinc-300"
+                    className="text-zinc-400 transition-colors group-hover:text-zinc-300"
                   />
                 </div>
 
@@ -432,7 +432,7 @@ export default function KitPage() {
                   {questions.length}
                 </p>
 
-                <p className="mt-2 text-xs text-zinc-500">
+                <p className="mt-2 text-xs text-zinc-400">
                   Browse interview questions
                 </p>
               </Link>
@@ -442,11 +442,11 @@ export default function KitPage() {
                 className="group bg-[#000000] p-5 transition-colors hover:bg-white/[0.02]"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-600">Flashcards</span>
+                  <span className="text-xs text-zinc-400">Flashcards</span>
 
                   <Layers3
                     size={15}
-                    className="text-zinc-500 transition-colors group-hover:text-zinc-300"
+                    className="text-zinc-400 transition-colors group-hover:text-zinc-300"
                   />
                 </div>
 
@@ -454,7 +454,7 @@ export default function KitPage() {
                   {flashcards.length}
                 </p>
 
-                <p className="mt-2 text-xs text-zinc-500">
+                <p className="mt-2 text-xs text-zinc-400">
                   Review key concepts
                 </p>
               </Link>
@@ -468,12 +468,12 @@ export default function KitPage() {
                     Requirements
                   </h2>
 
-                  <p className="mt-1 text-xs text-zinc-600">
+                  <p className="mt-1 text-xs text-zinc-400">
                     What your preparation is built around.
                   </p>
                 </div>
 
-                <span className="text-xs text-zinc-500">
+                <span className="text-xs text-zinc-400">
                   {requirements.length} total
                 </span>
               </div>
@@ -493,11 +493,11 @@ export default function KitPage() {
                     </div>
 
                     <div className="flex shrink-0 items-center gap-2">
-                      <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-600">
+                      <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-400">
                         {requirement.kind}
                       </span>
 
-                      <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-600">
+                      <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-400">
                         {requirement.priority}
                       </span>
                     </div>
@@ -514,13 +514,13 @@ export default function KitPage() {
                     Preparation plan
                   </h2>
 
-                  <p className="mt-1 text-xs text-zinc-600">
+                  <p className="mt-1 text-xs text-zinc-400">
                     {schedule.days_available}{" "}
                     {schedule.days_available === 1 ? "day" : "days"} available
                   </p>
                 </div>
 
-                <CalendarDays size={15} className="text-zinc-500" />
+                <CalendarDays size={15} className="text-zinc-400" />
               </div>
 
               <div className="divide-y divide-white/[0.05]">
@@ -535,15 +535,15 @@ export default function KitPage() {
                         Day {day.day}
                       </p>
 
-                      <p className="mt-1 text-xs text-zinc-600">{day.focus}</p>
+                      <p className="mt-1 text-xs text-zinc-400">{day.focus}</p>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <span className="text-[11px] text-zinc-600">
+                      <span className="text-[11px] text-zinc-400">
                         {day.minutes} min
                       </span>
 
-                      <ArrowRight size={14} className="text-zinc-500" />
+                      <ArrowRight size={14} className="text-zinc-400" />
                     </div>
                   </Link>
                 ))}
@@ -572,19 +572,19 @@ export default function KitPage() {
             <Sparkles size={18} className="text-zinc-300" />
           </div>
 
-          <p className="mb-2 text-xs text-zinc-600">{kit.company}</p>
+          <p className="mb-2 text-xs text-zinc-400">{kit.company}</p>
 
           <h1 className="text-xl font-semibold tracking-[-0.025em] text-white">
             Building your interview kit
           </h1>
 
-          <p className="mt-2 text-sm text-zinc-600">{kit.role}</p>
+          <p className="mt-2 text-sm text-zinc-400">{kit.role}</p>
         </div>
 
         <div className="rounded-xl border border-white/20 bg-[#000000] p-5">
           <div className="mb-5">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-[11px] text-zinc-600">
+              <span className="text-[11px] text-zinc-400">
                 Generation progress
               </span>
 
@@ -628,7 +628,7 @@ export default function KitPage() {
                   <span
                     className={[
                       "text-sm",
-                      active || completed ? "text-zinc-300" : "text-zinc-500",
+                      active || completed ? "text-zinc-300" : "text-zinc-400",
                     ].join(" ")}
                   >
                     {step.label}
@@ -639,7 +639,7 @@ export default function KitPage() {
           </div>
 
           <div className="mt-5 border-t border-white/20 pt-4">
-            <p className="text-center text-[11px] text-zinc-500">
+            <p className="text-center text-[11px] text-zinc-400">
               This can take a little while while we research the company and
               build your preparation.
             </p>
@@ -662,9 +662,9 @@ function StatCard({
   return (
     <div className="bg-[#000000] p-5">
       <div className="flex items-center justify-between">
-        <span className="text-xs text-zinc-600">{label}</span>
+        <span className="text-xs text-zinc-400">{label}</span>
 
-        <Icon size={15} className="text-zinc-500" />
+        <Icon size={15} className="text-zinc-400" />
       </div>
 
       <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-zinc-200">

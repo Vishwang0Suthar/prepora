@@ -490,7 +490,72 @@ router.post(
     }
   },
 );
+/**
+ * PATCH /api/kits/:id/flashcards/reorder
+ */
+router.patch(
+  "/:id/flashcards/reorder",
+  requireAuth,
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      if (!req.userId) {
+        return res.status(401).json({
+          ok: false,
+          error: "UNAUTHORIZED",
+        });
+      }
 
+      const kitId = Array.isArray(req.params.id)
+        ? req.params.id[0]
+        : req.params.id;
+
+      if (!kitId) {
+        return res.status(400).json({
+          ok: false,
+          error: "INVALID_KIT_ID",
+        });
+      }
+
+      const input = reorderFlashcardsSchema.parse(req.body);
+
+      const flashcards = await reorderFlashcards(
+        kitId,
+        req.userId,
+        input.flashcard_ids,
+      );
+
+      return res.status(200).json({
+        ok: true,
+        flashcards,
+      });
+    } catch (error) {
+      console.error("PATCH flashcard reorder failed:", error);
+
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          ok: false,
+          error: "INVALID_REQUEST",
+          details: error.issues,
+        });
+      }
+
+      if (error instanceof KitValidationError) {
+        const status = error.code === "KIT_NOT_FOUND" ? 404 : 400;
+
+        return res.status(status).json({
+          ok: false,
+          error: error.code,
+          message: error.message,
+        });
+      }
+
+      return res.status(500).json({
+        ok: false,
+        error: "INTERNAL_SERVER_ERROR",
+      });
+    }
+  },
+);
 /**
  * PATCH /api/kits/:id/flashcards/:flashcardId
  */
@@ -610,73 +675,6 @@ router.delete(
           error.code === "FLASHCARD_NOT_FOUND" || error.code === "KIT_NOT_FOUND"
             ? 404
             : 400;
-
-        return res.status(status).json({
-          ok: false,
-          error: error.code,
-          message: error.message,
-        });
-      }
-
-      return res.status(500).json({
-        ok: false,
-        error: "INTERNAL_SERVER_ERROR",
-      });
-    }
-  },
-);
-
-/**
- * PATCH /api/kits/:id/flashcards/reorder
- */
-router.patch(
-  "/:id/flashcards/reorder",
-  requireAuth,
-  async (req: AuthenticatedRequest, res: Response) => {
-    try {
-      if (!req.userId) {
-        return res.status(401).json({
-          ok: false,
-          error: "UNAUTHORIZED",
-        });
-      }
-
-      const kitId = Array.isArray(req.params.id)
-        ? req.params.id[0]
-        : req.params.id;
-
-      if (!kitId) {
-        return res.status(400).json({
-          ok: false,
-          error: "INVALID_KIT_ID",
-        });
-      }
-
-      const input = reorderFlashcardsSchema.parse(req.body);
-
-      const flashcards = await reorderFlashcards(
-        kitId,
-        req.userId,
-        input.flashcard_ids,
-      );
-
-      return res.status(200).json({
-        ok: true,
-        flashcards,
-      });
-    } catch (error) {
-      console.error("PATCH flashcard reorder failed:", error);
-
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({
-          ok: false,
-          error: "INVALID_REQUEST",
-          details: error.issues,
-        });
-      }
-
-      if (error instanceof KitValidationError) {
-        const status = error.code === "KIT_NOT_FOUND" ? 404 : 400;
 
         return res.status(status).json({
           ok: false,

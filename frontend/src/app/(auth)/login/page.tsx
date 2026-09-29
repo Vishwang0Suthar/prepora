@@ -72,7 +72,7 @@ export default function LoginPage() {
             Welcome back
           </h1>
 
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-zinc-400">
             Sign in to continue your interview preparation.
           </p>
         </div>
@@ -128,7 +128,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-5 text-center text-xs text-zinc-600">
+        <p className="mt-5 text-center text-xs text-zinc-400">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
@@ -174,7 +174,7 @@ function Field({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         required={required}
-        className="h-10 w-full rounded-md border border-white/20 bg-[#08090a] px-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-500 transition-colors focus:border-white/[0.18]"
+        className="h-10 w-full rounded-md border border-white/20 bg-[#08090a] px-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-400 transition-colors focus:border-white/[0.18]"
       />
     </label>
   );

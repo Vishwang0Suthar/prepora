@@ -74,7 +74,7 @@ export default function DashboardPage() {
     <main className="space-y-8">
       <header className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
             Workspace
           </p>
 
@@ -173,7 +173,7 @@ function KitCard({ kit }: { kit: KitSummary }) {
             {kit.role || "Role not specified"}
           </p>
 
-          <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-zinc-600">
+          <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-zinc-400">
             {kit.location && <span>{kit.location}</span>}
 
             <span>{kit.days_available} days</span>
@@ -185,7 +185,7 @@ function KitCard({ kit }: { kit: KitSummary }) {
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-transparent transition-colors group-hover:border-white/20 group-hover:bg-white/[0.03]">
           <ArrowRight
             size={15}
-            className="text-zinc-500 transition-all group-hover:scale-105 group-hover:text-zinc-300"
+            className="text-zinc-400 transition-all group-hover:scale-105 group-hover:text-zinc-300"
           />
         </div>
       </div>
@@ -205,7 +205,7 @@ function StatCard({
   return (
     <div className="rounded-lg border border-white/20 bg-[#000000] px-4 py-4">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-zinc-600">
+        <div className="flex items-center gap-2 text-zinc-400">
           {icon}
 
           <span className="text-xs font-semibold uppercase tracking-[0.12em]">
@@ -224,7 +224,7 @@ function StatCard({
 function EmptyState() {
   return (
     <section className="rounded-lg border border-dashed border-white/20 bg-[#000000] py-24 text-center">
-      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-zinc-500">
+      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-zinc-400">
         <BriefcaseBusiness size={17} />
       </div>
 
@@ -232,7 +232,7 @@ function EmptyState() {
         No interview kits yet
       </h2>
 
-      <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-zinc-600">
+      <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-zinc-400">
         Create your first kit from a job description and let Prepora build your
         preparation plan.
       </p>

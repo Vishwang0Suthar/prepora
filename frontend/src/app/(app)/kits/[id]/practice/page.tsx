@@ -280,7 +280,7 @@ export default function PracticePage() {
               No practice questions are available yet.
             </p>
 
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-zinc-400">
               Questions will appear here once they are generated for this kit.
             </p>
           </div>
@@ -294,8 +294,8 @@ export default function PracticePage() {
       <KitSidebar kitId={kitId} />
 
       <main className="min-w-0 space-y-6">
-        <header>
-          <p className="text-xs text-zinc-600">Interview practice</p>
+        <div>
+          <p className="text-xs text-zinc-400">Interview practice</p>
 
           <div className="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
@@ -312,24 +312,24 @@ export default function PracticePage() {
             <button
               type="button"
               onClick={resetPractice}
-              className="flex w-fit items-center gap-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300"
+              className="flex w-fit cursor-pointer items-center gap-2 text-xs text-zinc-400 transition-colors hover:text-zinc-300"
             >
               <RotateCcw size={13} />
               Start from beginning
             </button>
           </div>
-        </header>
+        </div>
 
-        <section className="rounded-lg border border-white/20 bg-[#000000]">
+        <div className="rounded-lg border border-white/20 bg-[#000000]">
           <div className="border-b border-white/20 px-5 py-4">
             <div className="flex items-center justify-between">
-              <div className="text-xs text-zinc-600">
+              <div className="text-xs text-zinc-400">
                 Question{" "}
                 <span className="text-zinc-300">{currentIndex + 1}</span> of{" "}
                 <span className="text-zinc-300">{questions.length}</span>
               </div>
 
-              <div className="text-xs text-zinc-600">
+              <div className="text-xs text-zinc-400">
                 <span className="text-zinc-300">{practicedCount}</span>/
                 {questions.length} practiced
               </div>
@@ -345,20 +345,20 @@ export default function PracticePage() {
 
           <div className="px-5 py-8 sm:px-8 sm:py-10">
             <div className="mb-6 flex flex-wrap items-center gap-2">
-              <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-600">
+              <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-400">
                 {currentQuestion.category}
               </span>
 
               <Difficulty value={currentQuestion.difficulty} />
 
               {currentQuestion.pinned && (
-                <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-600">
+                <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-400">
                   Pinned
                 </span>
               )}
 
               {practiceState[currentQuestion.id] && (
-                <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-600">
+                <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-400">
                   {practiceState[currentQuestion.id] === "high"
                     ? "Confident"
                     : practiceState[currentQuestion.id] === "medium"
@@ -391,7 +391,7 @@ export default function PracticePage() {
 
               {showAnswer && (
                 <div className="mt-4 rounded-md border border-white/20 bg-white/[0.02] p-5">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                     Answer outline
                   </p>
 
@@ -405,12 +405,12 @@ export default function PracticePage() {
 
           <div className="border-t border-white/20 px-5 py-5 sm:px-8">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                 How confident are you?
               </p>
 
               {saving && (
-                <span className="text-xs text-zinc-500">Saving...</span>
+                <span className="text-xs text-zinc-400">Saving...</span>
               )}
             </div>
 
@@ -426,10 +426,10 @@ export default function PracticePage() {
                     disabled={saving}
                     onClick={() => setConfidence(option.value)}
                     className={[
-                      "flex items-center gap-2 rounded-md border px-3 py-2 text-xs transition-colors",
+                      "flex items-center gap-2 rounded-md border cursor-pointer  px-3 py-2 text-xs transition-colors",
                       selected
                         ? "border-white/[0.14] bg-white/[0.08] text-zinc-200"
-                        : "border-white/20 text-zinc-600 hover:border-white/[0.1] hover:text-zinc-400",
+                        : "border-white/20 text-zinc-400 bg-black hover:invert",
                       "disabled:pointer-events-none disabled:opacity-50",
                     ].join(" ")}
                   >
@@ -446,7 +446,7 @@ export default function PracticePage() {
               type="button"
               onClick={previousQuestion}
               disabled={currentIndex === 0}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-300 transition-colors hover:bg-white/[0.04] hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-30"
+              className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-300 transition-colors hover:bg-white/[0.04] hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-30"
             >
               <ArrowLeft size={14} />
               Previous
@@ -456,21 +456,21 @@ export default function PracticePage() {
               type="button"
               onClick={nextQuestion}
               disabled={currentIndex === questions.length - 1}
-              className="flex items-center gap-2 rounded-md bg-white/[0.08] px-3 py-2 text-xs text-zinc-300 transition-colors hover:bg-white/[0.12] disabled:pointer-events-none disabled:opacity-30"
+              className="flex items-center cursor-pointer gap-2 rounded-md bg-white/[0.08] px-3 py-2 text-xs text-zinc-300 transition-colors hover:bg-white/[0.12] disabled:pointer-events-none disabled:opacity-30"
             >
               Next
               <ArrowRight size={14} />
             </button>
           </div>
-        </section>
+        </div>
 
-        <section className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           <Stat label="Questions" value={questions.length} />
 
           <Stat label="Practiced" value={practicedCount} />
 
           <Stat label="Progress" value={`${progress}%`} />
-        </section>
+        </div>
       </main>
     </div>
   );
@@ -495,7 +495,7 @@ function Difficulty({ value }: { value: 1 | 2 | 3 }) {
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="rounded-lg border border-white/20 bg-[#000000] px-4 py-4">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
         {label}
       </p>
 

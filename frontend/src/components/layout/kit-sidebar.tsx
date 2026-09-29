@@ -47,7 +47,7 @@ export function KitSidebar({ kitId }: KitSidebarProps) {
 
   return (
     <nav className="w-full">
-      <div className="mb-3 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
+      <div className="mb-3 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
         Interview kit
       </div>
 
