@@ -490,7 +490,72 @@ router.post(
     }
   },
 );
+/**
+ * PATCH /api/kits/:id/flashcards/reorder
+ */
+router.patch(
+  "/:id/flashcards/reorder",
+  requireAuth,
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      if (!req.userId) {
+        return res.status(401).json({
+          ok: false,
+          error: "UNAUTHORIZED",
+        });
+      }
 
+      const kitId = Array.isArray(req.params.id)
+        ? req.params.id[0]
+        : req.params.id;
+
+      if (!kitId) {
+        return res.status(400).json({
+          ok: false,
+          error: "INVALID_KIT_ID",
+        });
+      }
+
+      const input = reorderFlashcardsSchema.parse(req.body);
+
+      const flashcards = await reorderFlashcards(
+        kitId,
+        req.userId,
+        input.flashcard_ids,
+      );
+
+      return res.status(200).json({
+        ok: true,
+        flashcards,
+      });
+    } catch (error) {
+      console.error("PATCH flashcard reorder failed:", error);
+
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({
+          ok: false,
+          error: "INVALID_REQUEST",
+          details: error.issues,
+        });
+      }
+
+      if (error instanceof KitValidationError) {
+        const status = error.code === "KIT_NOT_FOUND" ? 404 : 400;
+
+        return res.status(status).json({
+          ok: false,
+          error: error.code,
+          message: error.message,
+        });
+      }
+
+      return res.status(500).json({
+        ok: false,
+        error: "INTERNAL_SERVER_ERROR",
+      });
+    }
+  },
+);
 /**
  * PATCH /api/kits/:id/flashcards/:flashcardId
  */
@@ -610,73 +675,6 @@ router.delete(
           error.code === "FLASHCARD_NOT_FOUND" || error.code === "KIT_NOT_FOUND"
             ? 404
             : 400;
-
-        return res.status(status).json({
-          ok: false,
-          error: error.code,
-          message: error.message,
-        });
-      }
-
-      return res.status(500).json({
-        ok: false,
-        error: "INTERNAL_SERVER_ERROR",
-      });
-    }
-  },
-);
-
-/**
- * PATCH /api/kits/:id/flashcards/reorder
- */
-router.patch(
-  "/:id/flashcards/reorder",
-  requireAuth,
-  async (req: AuthenticatedRequest, res: Response) => {
-    try {
-      if (!req.userId) {
-        return res.status(401).json({
-          ok: false,
-          error: "UNAUTHORIZED",
-        });
-      }
-
-      const kitId = Array.isArray(req.params.id)
-        ? req.params.id[0]
-        : req.params.id;
-
-      if (!kitId) {
-        return res.status(400).json({
-          ok: false,
-          error: "INVALID_KIT_ID",
-        });
-      }
-
-      const input = reorderFlashcardsSchema.parse(req.body);
-
-      const flashcards = await reorderFlashcards(
-        kitId,
-        req.userId,
-        input.flashcard_ids,
-      );
-
-      return res.status(200).json({
-        ok: true,
-        flashcards,
-      });
-    } catch (error) {
-      console.error("PATCH flashcard reorder failed:", error);
-
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({
-          ok: false,
-          error: "INVALID_REQUEST",
-          details: error.issues,
-        });
-      }
-
-      if (error instanceof KitValidationError) {
-        const status = error.code === "KIT_NOT_FOUND" ? 404 : 400;
 
         return res.status(status).json({
           ok: false,
@@ -1269,7 +1267,7 @@ router.delete(
 /**
  * POST /api/kits
  *
- * Create and generate a new interview kit.
+ * Create an interview kit and start generation in the background.
  */
 router.post(
   "/",
@@ -1295,46 +1293,74 @@ router.post(
 
       const kit = await createKit(parsed.data, req.userId);
 
-      try {
-        const generatedKit = await runPipeline(
-          {
-            company: parsed.data.company,
-            company_url: parsed.data.company_url,
-            role: parsed.data.role,
-            location: parsed.data.location,
-            jd_text: parsed.data.jd_text,
-            days_available: parsed.data.days_available,
-          },
-          (step) =>
-            updateKitProgress(kit.id, req.userId!, step).catch((error) => {
-              console.error(`Failed to update kit progress (${step}):`, error);
-            }),
-        );
+      /*
+       * Start generation in the background.
+       *
+       * IMPORTANT:
+       * Do not await this promise.
+       *
+       * The user only needs the kit ID at this point.
+       */
+      void (async () => {
+        try {
+          const generatedKit = await runPipeline(
+            {
+              company: parsed.data.company,
+              company_url: parsed.data.company_url,
+              role: parsed.data.role,
+              location: parsed.data.location,
+              jd_text: parsed.data.jd_text,
+              days_available: parsed.data.days_available,
+            },
+            (step) =>
+              updateKitProgress(kit.id, req.userId!, step).catch((error) => {
+                console.error(
+                  `Failed to update kit progress (${step}):`,
+                  error,
+                );
+              }),
+          );
 
-        const readyKit = await markKitReady(kit.id, req.userId, generatedKit);
+          await markKitReady(kit.id, req.userId!, generatedKit);
 
-        return res.status(201).json({
-          ok: true,
-          kit: readyKit,
-        });
-      } catch (error) {
-        console.error("Kit generation failed:", error);
+          console.log(`Interview kit generation completed: ${kit.id}`);
+        } catch (error) {
+          console.error(`Kit generation failed for ${kit.id}:`, error);
 
-        const normalized = normalizeGenerationError(error);
+          const normalized = normalizeGenerationError(error);
 
-        await markKitFailed(
-          kit.id,
-          req.userId,
-          normalized.code,
-          normalized.message,
-        );
+          try {
+            await markKitFailed(
+              kit.id,
+              req.userId!,
+              normalized.code,
+              normalized.message,
+            );
+          } catch (markFailedError) {
+            console.error(
+              `Failed to mark kit ${kit.id} as failed:`,
+              markFailedError,
+            );
+          }
+        }
+      })();
 
-        return res.status(500).json({
-          ok: false,
-          error: normalized.code,
-          message: normalized.message,
-        });
-      }
+      /*
+       * Return immediately after the database row exists.
+       */
+      return res.status(201).json({
+        ok: true,
+        kit: {
+          id: kit.id,
+          status: kit.status,
+          company: kit.company,
+          company_url: kit.company_url,
+          role: kit.role_title,
+          location: kit.location,
+          days_available: kit.days_requested,
+          created_at: kit.created_at,
+        },
+      });
     } catch (error) {
       console.error("POST /api/kits failed:", error);
 

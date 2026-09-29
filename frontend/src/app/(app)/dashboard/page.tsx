@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
+  AlertCircle,
   ArrowRight,
   BriefcaseBusiness,
   Clock3,
@@ -67,31 +68,35 @@ export default function DashboardPage() {
     (kit) => kit.status === "generating",
   ).length;
 
+  const failedCount = kits.filter((kit) => kit.status === "failed").length;
+
   return (
     <main className="space-y-8">
       <header className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
-          <p className="text-xs text-zinc-600">Workspace</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
+            Workspace
+          </p>
 
           <h1 className="mt-2 text-2xl font-semibold tracking-[-0.035em] text-white">
             Interview Kits
           </h1>
 
-          <p className="mt-2 max-w-xl text-sm text-zinc-500">
+          <p className="mt-2 max-w-xl text-sm leading-6 text-zinc-300">
             Build structured preparation plans from your job descriptions.
           </p>
         </div>
 
         <Link
           href="/kits/new"
-          className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-white px-3 text-xs font-medium text-black transition-opacity hover:opacity-90"
+          className="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-white px-3.5 text-xs font-medium text-black transition-opacity hover:opacity-90"
         >
           <Plus size={14} />
           New kit
         </Link>
       </header>
 
-      <section className="grid gap-3 sm:grid-cols-3">
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           icon={<FileText size={15} />}
           label="Total kits"
@@ -109,10 +114,16 @@ export default function DashboardPage() {
           label="Generating"
           value={generatingCount}
         />
+
+        <StatCard
+          icon={<AlertCircle size={15} />}
+          label="Failed"
+          value={failedCount}
+        />
       </section>
 
       {loading ? (
-        <div className="flex min-h-[280px] items-center justify-center rounded-lg border border-white/[0.07] bg-[#0b0c0e]">
+        <div className="flex min-h-[280px] items-center justify-center rounded-lg border border-white/20 bg-[#000000]">
           <LoadingSpinner size="md" />
         </div>
       ) : error ? (
@@ -123,7 +134,7 @@ export default function DashboardPage() {
             <button
               type="button"
               onClick={loadKits}
-              className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
+              className="rounded-md bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-200"
             >
               Try again
             </button>
@@ -146,23 +157,23 @@ function KitCard({ kit }: { kit: KitSummary }) {
   return (
     <Link
       href={`/kits/${kit.id}`}
-      className="group block rounded-lg border border-white/[0.07] bg-[#0b0c0e] px-5 py-5 transition-colors hover:border-white/[0.12]"
+      className="group block rounded-lg border border-white/20 bg-[#000000] px-5 py-4 transition-colors hover:border-white/[0.12] hover:bg-white/[0.012]"
     >
-      <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+      <div className="flex items-center justify-between gap-5">
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="truncate text-sm font-medium text-zinc-300">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="truncate text-sm font-medium text-zinc-200">
               {kit.company || "Untitled company"}
             </span>
 
             <StatusBadge status={kit.status} />
           </div>
 
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-1.5 truncate text-sm text-zinc-300">
             {kit.role || "Role not specified"}
           </p>
 
-          <div className="mt-3 flex flex-wrap items-center gap-3 text-[11px] text-zinc-700">
+          <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-zinc-400">
             {kit.location && <span>{kit.location}</span>}
 
             <span>{kit.days_available} days</span>
@@ -171,10 +182,12 @@ function KitCard({ kit }: { kit: KitSummary }) {
           </div>
         </div>
 
-        <ArrowRight
-          size={16}
-          className="shrink-0 text-zinc-800 transition-all group-hover:translate-x-1 group-hover:text-zinc-400"
-        />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-transparent transition-colors group-hover:border-white/20 group-hover:bg-white/[0.03]">
+          <ArrowRight
+            size={15}
+            className="text-zinc-400 transition-all group-hover:scale-105 group-hover:text-zinc-300"
+          />
+        </div>
       </div>
     </Link>
   );
@@ -190,39 +203,43 @@ function StatCard({
   value: number;
 }) {
   return (
-    <div className="rounded-lg border border-white/[0.07] bg-[#0b0c0e] px-4 py-4">
-      <div className="flex items-center gap-2 text-zinc-700">
-        {icon}
+    <div className="rounded-lg border border-white/20 bg-[#000000] px-4 py-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-zinc-400">
+          {icon}
 
-        <span className="text-[10px] font-semibold uppercase tracking-[0.12em]">
-          {label}
-        </span>
+          <span className="text-xs font-semibold uppercase tracking-[0.12em]">
+            {label}
+          </span>
+        </div>
       </div>
 
-      <p className="mt-3 text-lg font-medium text-zinc-300">{value}</p>
+      <p className="mt-3 text-xl font-semibold tracking-[-0.025em] text-zinc-200">
+        {value}
+      </p>
     </div>
   );
 }
 
 function EmptyState() {
   return (
-    <section className="rounded-lg border border-dashed border-white/[0.08] bg-[#0b0c0e] py-24 text-center">
-      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-md border border-white/[0.07] text-zinc-700">
+    <section className="rounded-lg border border-dashed border-white/20 bg-[#000000] py-24 text-center">
+      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-md border border-white/20 text-zinc-400">
         <BriefcaseBusiness size={17} />
       </div>
 
-      <h2 className="mt-5 text-sm font-medium text-zinc-400">
+      <h2 className="mt-5 text-sm font-medium text-zinc-300">
         No interview kits yet
       </h2>
 
-      <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-zinc-700">
+      <p className="mx-auto mt-2 max-w-sm text-xs leading-5 text-zinc-400">
         Create your first kit from a job description and let Prepora build your
         preparation plan.
       </p>
 
       <Link
         href="/kits/new"
-        className="mt-5 inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-3 py-2 text-xs text-zinc-500 transition-colors hover:border-white/[0.14] hover:text-zinc-300"
+        className="mt-5 inline-flex items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-300 transition-colors hover:border-white/[0.14] hover:text-zinc-300"
       >
         <Plus size={13} />
         Create interview kit

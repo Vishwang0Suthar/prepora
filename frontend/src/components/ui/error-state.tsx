@@ -19,7 +19,7 @@ export function ErrorState({
 
       <h2 className="text-base font-semibold text-zinc-100">{title}</h2>
 
-      <p className="mt-2 max-w-md text-sm leading-6 text-zinc-500">
+      <p className="mt-2 max-w-md text-sm leading-6 text-zinc-300">
         {description}
       </p>
 

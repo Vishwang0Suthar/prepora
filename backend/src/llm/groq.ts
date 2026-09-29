@@ -68,7 +68,6 @@
 //     }
 //   }
 // }
-
 import Groq from "groq-sdk";
 
 import { env } from "../config/env";
@@ -76,8 +75,16 @@ import { env } from "../config/env";
 import type { GenerateJsonOptions, LLMProvider } from "./provider";
 
 const MAX_RETRIES = 2;
-
 const DEFAULT_RETRY_DELAY_MS = 2_500;
+
+/*
+ * Keep enough room for structured JSON responses without allowing
+ * an individual generation to grow unnecessarily large.
+ *
+ * Groq recommends max_completion_tokens for controlling generated
+ * output length.
+ */
+const DEFAULT_MAX_COMPLETION_TOKENS = 4096;
 
 function getRetryDelayMs(error: unknown): number {
   if (error && typeof error === "object" && "headers" in error) {
@@ -142,13 +149,13 @@ export class GroqProvider implements LLMProvider {
 
   async generateJSON<T>(options: GenerateJsonOptions): Promise<T> {
     const systemChars = options.system.length;
-
     const userChars = options.user.length;
-
     const totalChars = systemChars + userChars;
 
-    // Rough diagnostic only:
-    // ~4 characters per token for English text.
+    /*
+     * Rough diagnostic only:
+     * ~4 characters per token for English text.
+     */
     const estimatedInputTokens = Math.ceil(totalChars / 4);
 
     console.log(
@@ -156,14 +163,26 @@ export class GroqProvider implements LLMProvider {
         `system_chars=${systemChars} ` +
         `user_chars=${userChars} ` +
         `total_chars=${totalChars} ` +
-        `estimated_input_tokens=${estimatedInputTokens}`,
+        `estimated_input_tokens=${estimatedInputTokens} ` +
+        `max_completion_tokens=${DEFAULT_MAX_COMPLETION_TOKENS}`,
     );
 
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
       try {
         const response = await this.client.chat.completions.create({
           model: env.llmModel,
+
           temperature: 0,
+
+          /*
+           * Explicitly bound the generated response.
+           *
+           * Previously this was omitted, which allowed the
+           * model/provider default to terminate structured JSON
+           * generation before a complete document was produced.
+           */
+          max_completion_tokens: DEFAULT_MAX_COMPLETION_TOKENS,
+
           messages: [
             {
               role: "system",
@@ -174,6 +193,7 @@ export class GroqProvider implements LLMProvider {
               content: options.user,
             },
           ],
+
           response_format: {
             type: "json_schema",
             json_schema: {
@@ -196,6 +216,13 @@ export class GroqProvider implements LLMProvider {
           throw new Error("LLM returned invalid JSON");
         }
       } catch (error) {
+        /*
+         * Only retry rate-limit errors.
+         *
+         * A normal validation/generation failure should be
+         * surfaced immediately instead of repeating the exact
+         * same request.
+         */
         if (!isRateLimitError(error) || attempt === MAX_RETRIES) {
           throw error;
         }
@@ -203,7 +230,8 @@ export class GroqProvider implements LLMProvider {
         const delayMs = getRetryDelayMs(error);
 
         console.log(
-          `[LLM] rate limited; retrying in ${Math.ceil(delayMs / 1000)}s ` +
+          `[LLM] rate limited; retrying in ` +
+            `${Math.ceil(delayMs / 1000)}s ` +
             `(attempt ${attempt + 1}/${MAX_RETRIES})`,
         );
 

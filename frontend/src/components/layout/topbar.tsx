@@ -58,19 +58,19 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   const initials = email?.slice(0, 1).toUpperCase() || "U";
 
   return (
-    <header className="sticky top-0 z-30 h-16 border-b border-white/[0.07] bg-[#08090a]/90 backdrop-blur-xl">
-      <div className="flex h-full items-center justify-between px-5 sm:px-8 lg:px-10">
+    <header className="sticky top-0 z-30 h-16 border-b border-white/20 bg-black backdrop-blur-xl">
+      <div className="flex h-full items-center justify-between">
         <button
           type="button"
           onClick={onMenuClick}
-          className="rounded-md p-2 text-zinc-500 hover:bg-white/[0.05] hover:text-zinc-200 lg:hidden"
+          className="rounded-md p-2 text-zinc-300 hover:bg-white/[0.05] hover:text-zinc-200 lg:hidden"
           aria-label="Open navigation"
         >
           <Menu size={19} />
         </button>
 
         <div className="hidden lg:block">
-          <span className="text-xs text-zinc-600">Interview workspace</span>
+          <span className="text-xl text-zinc-400">Interview workspace</span>
         </div>
 
         <div className="ml-auto flex items-center gap-3">
@@ -88,7 +88,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
               onClick={() => setMenuOpen((open) => !open)}
               aria-label="Open account menu"
               aria-expanded={menuOpen}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.1] bg-zinc-800 text-[11px] font-medium text-zinc-400 transition-colors hover:border-white/[0.18] hover:text-white"
+              className="flex h-10 w-10 cursor-pointer hover:brightness-150 items-center justify-center rounded-full border border-white/[0.1] bg-zinc-800 text-[11px] font-medium text-zinc-400 transition-colors hover:border-white/[0.18] hover:text-white"
             >
               {email ? initials : <User size={14} />}
             </button>
@@ -102,9 +102,9 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                   onClick={() => setMenuOpen(false)}
                 />
 
-                <div className="absolute right-0 top-11 z-50 w-64 overflow-hidden rounded-lg border border-white/[0.08] bg-[#0d0e10] shadow-2xl shadow-black/40">
-                  <div className="border-b border-white/[0.06] px-4 py-3">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-700">
+                <div className="absolute right-0 top-11 z-50 w-64 overflow-hidden rounded-lg border border-white/20 bg-[#0d0e10] shadow-2xl shadow-black/40">
+                  <div className="border-b border-white/20 px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-400">
                       Account
                     </p>
 
@@ -117,7 +117,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                     <Link
                       href="/settings"
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-xs text-zinc-500 transition-colors hover:bg-white/[0.04] hover:text-zinc-200"
+                      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-xs text-zinc-300 transition-colors hover:bg-white/[0.04] hover:text-zinc-200"
                     >
                       <Settings size={14} />
                       Settings
@@ -127,7 +127,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                       type="button"
                       onClick={handleSignOut}
                       disabled={signingOut}
-                      className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-xs text-zinc-500 transition-colors hover:bg-white/[0.04] hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="flex w-full cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-xs text-zinc-300 transition-colors hover:bg-white/[0.04] hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <LogOut size={14} />
 

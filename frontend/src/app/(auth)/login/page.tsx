@@ -72,14 +72,14 @@ export default function LoginPage() {
             Welcome back
           </h1>
 
-          <p className="mt-2 text-sm text-zinc-600">
+          <p className="mt-2 text-sm text-zinc-400">
             Sign in to continue your interview preparation.
           </p>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="rounded-lg border border-white/[0.07] bg-[#0b0c0e] p-5"
+          className="rounded-lg border border-white/20 bg-[#000000] p-5"
         >
           <div className="space-y-5">
             <Field
@@ -128,7 +128,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-5 text-center text-xs text-zinc-600">
+        <p className="mt-5 text-center text-xs text-zinc-400">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
@@ -163,7 +163,7 @@ function Field({
 }: FieldProps) {
   return (
     <label className="block">
-      <span className="mb-2 flex items-center gap-2 text-xs font-medium text-zinc-500">
+      <span className="mb-2 flex items-center gap-2 text-xs font-medium text-zinc-300">
         {icon}
         {label}
       </span>
@@ -174,7 +174,7 @@ function Field({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         required={required}
-        className="h-10 w-full rounded-md border border-white/[0.08] bg-[#08090a] px-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-700 transition-colors focus:border-white/[0.18]"
+        className="h-10 w-full rounded-md border border-white/20 bg-[#08090a] px-3 text-sm text-zinc-200 outline-none placeholder:text-zinc-400 transition-colors focus:border-white/[0.18]"
       />
     </label>
   );

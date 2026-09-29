@@ -16,7 +16,7 @@ export default function AppError({
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center">
-      <div className="w-full max-w-md rounded-lg border border-white/[0.07] bg-[#0b0c0e] px-6 py-8 text-center">
+      <div className="w-full max-w-md rounded-lg border border-white/20 bg-[#000000] px-6 py-8 text-center">
         <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-md border border-red-500/10 bg-red-500/[0.04] text-red-400/60">
           <AlertTriangle size={17} />
         </div>
@@ -25,7 +25,7 @@ export default function AppError({
           Something went wrong
         </h1>
 
-        <p className="mt-2 text-xs leading-5 text-zinc-600">
+        <p className="mt-2 text-xs leading-5 text-zinc-400">
           Prepora couldn&apos;t load this part of the application. Try again,
           and if the problem continues, reload the page.
         </p>
@@ -33,7 +33,7 @@ export default function AppError({
         <button
           type="button"
           onClick={reset}
-          className="mt-6 inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-3 py-2 text-xs text-zinc-500 transition-colors hover:border-white/[0.14] hover:text-zinc-300"
+          className="mt-6 inline-flex items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-300 transition-colors hover:border-white/[0.14] hover:text-zinc-300"
         >
           <RotateCcw size={13} />
           Try again
