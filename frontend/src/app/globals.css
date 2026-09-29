@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+::selection {
+  background: #0047ab;
+  color: #f4c300;
+}
+
+html {
+  scroll-behavior: smooth;
+
+}
+
+body {
+  font-family: var(--font-gill-sans), sans-serif;
+}
+
+header,
+footer,
+section {
+
+  padding-left: max(0.75rem
+      /* 12px */
+      ,
+      calc((100vw - calc(1280px - 1rem
+            /* 16px */
+            * 2)) / 2));
+  padding-right: max(0.75rem
+      /* 12px */
+      ,
+      calc((100vw - calc(1280px - 1rem
+            /* 16px */
+            * 2)) / 2));
+
+}
