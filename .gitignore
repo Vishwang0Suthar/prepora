@@ -42,7 +42,7 @@ backend/*-result.json
 backend/cases-test.json
 backend/intants-result.json
 backend/result-test.json
-
+backend/cases.json
 # Loose debug script — move into backend/scripts/ instead
 # of relying on this ignore rule long-term.
 backend/test-tavily.ts
