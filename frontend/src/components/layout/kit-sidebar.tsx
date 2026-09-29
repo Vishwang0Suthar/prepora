@@ -47,7 +47,7 @@ export function KitSidebar({ kitId }: KitSidebarProps) {
 
   return (
     <nav className="w-full">
-      <div className="mb-3 px-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-600">
+      <div className="mb-3 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
         Interview kit
       </div>
 
@@ -71,7 +71,7 @@ export function KitSidebar({ kitId }: KitSidebarProps) {
                 "text-[13px] transition-colors",
                 active
                   ? "bg-white/[0.08] text-white"
-                  : "text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-200",
+                  : "text-zinc-300 hover:bg-white/[0.04] hover:text-zinc-200",
               ].join(" ")}
             >
               <Icon size={15} strokeWidth={1.8} />

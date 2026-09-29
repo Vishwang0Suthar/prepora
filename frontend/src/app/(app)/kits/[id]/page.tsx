@@ -1,18 +1,16 @@
+// frontend/src/app/(app)/kits/[id]/page.tsx
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
-  AlertCircle,
   ArrowRight,
   CalendarDays,
   Check,
   CheckCircle2,
   Circle,
-  FileText,
   Layers3,
-  Loader2,
   MessageSquare,
   Sparkles,
   Target,
@@ -20,6 +18,8 @@ import {
 
 import { apiRequest } from "@/lib/api";
 import { KitSidebar } from "@/components/layout/kit-sidebar";
+import { ErrorState } from "@/components/ui/error-state";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 type KitStatus = "generating" | "ready" | "failed";
 
@@ -165,8 +165,9 @@ export default function KitPage() {
   const kitId = params.id as string;
 
   const [kit, setKit] = useState<KitResponse["kit"] | null>(null);
-
   const [error, setError] = useState<string | null>(null);
+  const [justCompleted, setJustCompleted] = useState(false);
+  const previousStatusRef = useRef<KitStatus | null>(null);
 
   const loadKit = useCallback(async () => {
     try {
@@ -186,6 +187,30 @@ export default function KitPage() {
   }, [loadKit]);
 
   useEffect(() => {
+    if (!kit) {
+      return;
+    }
+
+    if (previousStatusRef.current === "generating" && kit.status === "ready") {
+      setJustCompleted(true);
+    }
+
+    previousStatusRef.current = kit.status;
+  }, [kit]);
+
+  useEffect(() => {
+    if (!justCompleted) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setJustCompleted(false);
+    }, 3000);
+
+    return () => window.clearTimeout(timeout);
+  }, [justCompleted]);
+
+  useEffect(() => {
     if (!kit || kit.status !== "generating") {
       return;
     }
@@ -198,23 +223,20 @@ export default function KitPage() {
   if (error) {
     return (
       <div className="flex min-h-[70vh] items-center justify-center">
-        <div className="max-w-md text-center">
-          <div className="mx-auto mb-5 flex h-10 w-10 items-center justify-center rounded-lg border border-red-400/10 bg-red-400/[0.05]">
-            <AlertCircle size={18} className="text-red-400" />
-          </div>
-
-          <h1 className="text-lg font-semibold text-white">
-            Unable to load kit
-          </h1>
-
-          <p className="mt-2 text-sm leading-6 text-zinc-500">{error}</p>
-
-          <button
-            onClick={loadKit}
-            className="mt-5 rounded-md bg-white px-4 py-2 text-xs font-medium text-black"
-          >
-            Try again
-          </button>
+        <div className="w-full max-w-xl">
+          <ErrorState
+            title="Unable to load kit"
+            description={error}
+            action={
+              <button
+                type="button"
+                onClick={loadKit}
+                className="rounded-md bg-white px-4 py-2 text-xs font-medium text-black transition-colors hover:bg-zinc-200"
+              >
+                Try again
+              </button>
+            }
+          />
         </div>
       </div>
     );
@@ -223,7 +245,7 @@ export default function KitPage() {
   if (!kit) {
     return (
       <div className="flex min-h-[70vh] items-center justify-center">
-        <Loader2 size={20} className="animate-spin text-zinc-600" />
+        <LoadingSpinner size="md" />
       </div>
     );
   }
@@ -231,9 +253,9 @@ export default function KitPage() {
   if (kit.status === "failed") {
     return (
       <div className="flex min-h-[70vh] items-center justify-center">
-        <div className="max-w-lg text-center">
+        <div className="w-full max-w-xl rounded-xl border border-white/20 bg-[#000000] p-6 text-center">
           <div className="mx-auto mb-5 flex h-10 w-10 items-center justify-center rounded-lg border border-red-400/10 bg-red-400/[0.05]">
-            <AlertCircle size={18} className="text-red-400" />
+            <span className="text-sm font-semibold text-red-400">!</span>
           </div>
 
           <p className="mb-2 text-xs text-zinc-600">{kit.company}</p>
@@ -242,23 +264,34 @@ export default function KitPage() {
             Kit generation failed
           </h1>
 
-          <p className="mt-3 text-sm leading-6 text-zinc-500">
+          <p className="mt-3 text-sm leading-6 text-zinc-300">
             {kit.error?.message ||
               "Something went wrong while generating this interview kit."}
           </p>
 
           {kit.error?.code && (
-            <p className="mt-3 font-mono text-[11px] text-zinc-700">
+            <p className="mt-3 font-mono text-[11px] text-zinc-500">
               {kit.error.code}
             </p>
           )}
 
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="mt-6 rounded-md bg-white px-4 py-2 text-xs font-medium text-black"
-          >
-            Back to dashboard
-          </button>
+          <div className="mt-6 flex flex-col justify-center gap-2 sm:flex-row">
+            <button
+              type="button"
+              onClick={loadKit}
+              className="rounded-md bg-white px-4 py-2 text-xs font-medium text-black transition-colors hover:bg-zinc-200"
+            >
+              Check again
+            </button>
+
+            <button
+              type="button"
+              onClick={() => router.push("/dashboard")}
+              className="rounded-md border border-white/20 px-4 py-2 text-xs font-medium text-zinc-400 transition-colors hover:border-white/[0.14] hover:text-zinc-200"
+            >
+              Back to dashboard
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -274,13 +307,9 @@ export default function KitPage() {
     const interviewKit = kit.kit;
 
     const requirements = interviewKit.role.requirements;
-
     const questions = interviewKit.questions;
-
     const flashcards = interviewKit.flashcards;
-
     const schedule = interviewKit.schedule;
-
     const uncovered = interviewKit.coverage.uncovered_requirement_ids;
 
     return (
@@ -301,46 +330,60 @@ export default function KitPage() {
                 {interviewKit.role.title}
               </h1>
 
-              <p className="mt-2 text-sm text-zinc-500">
+              <p className="mt-2 text-sm text-zinc-300">
                 {interviewKit.role.seniority}
                 {" · "}
                 {kit.location || "Location not specified"}
               </p>
             </div>
 
-            <div className="flex items-center gap-2 rounded-md border border-white/[0.07] bg-white/[0.02] px-3 py-2">
-              {uncovered.length === 0 ? (
-                <>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-2 rounded-md border border-white/20 bg-white/[0.02] px-3 py-2">
+                {uncovered.length === 0 ? (
+                  <>
+                    <CheckCircle2 size={14} className="text-emerald-400" />
+
+                    <span className="text-xs text-zinc-400">
+                      Full requirement coverage
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-xs font-medium text-amber-400">
+                      !
+                    </span>
+
+                    <span className="text-xs text-zinc-400">
+                      {uncovered.length} requirements uncovered
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {justCompleted && (
+                <div className="flex items-center gap-2 rounded-md border border-emerald-500/15 bg-emerald-500/[0.05] px-3 py-2">
                   <CheckCircle2 size={14} className="text-emerald-400" />
 
-                  <span className="text-xs text-zinc-400">
-                    Full requirement coverage
+                  <span className="text-xs text-emerald-400">
+                    Interview kit ready
                   </span>
-                </>
-              ) : (
-                <>
-                  <AlertCircle size={14} className="text-amber-400" />
-
-                  <span className="text-xs text-zinc-400">
-                    {uncovered.length} requirements uncovered
-                  </span>
-                </>
+                </div>
               )}
             </div>
           </div>
         </div>
 
         {/* Workspace */}
-        <div className="grid gap-6 lg:grid-cols-[180px_minmax(0,1fr)]">
+        <div className="grid gap-6 lg:grid-cols-[200px_minmax(0,1fr)]">
           <aside className="lg:pt-2">
             <KitSidebar kitId={kitId} />
           </aside>
 
           <main className="min-w-0 space-y-6">
             {/* Company brief */}
-            <section className="rounded-lg border border-white/[0.07] bg-[#0b0c0e] p-6">
+            <div className="rounded-lg border border-white/20 bg-[#000000] p-6 ">
               <div className="mb-5">
-                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-600">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
                   Company brief
                 </p>
 
@@ -349,35 +392,77 @@ export default function KitPage() {
                 </h2>
               </div>
 
-              <p className="max-w-3xl text-sm leading-7 text-zinc-500">
+              <p className="max-w-3xl text-sm leading-7 text-zinc-400">
                 {interviewKit.company_brief.summary}
               </p>
-            </section>
+            </div>
 
             {/* Stats */}
-            <section className="grid gap-px overflow-hidden rounded-lg border border-white/[0.07] bg-white/[0.07] sm:grid-cols-3">
-              <StatCard
-                icon={Target}
-                label="Requirements"
-                value={requirements.length}
-              />
+            <div className="grid gap-px divide-white/[0.07] divide-x overflow-hidden bg-[#000000] rounded-lg border border-white/20  sm:grid-cols-3">
+              <div className=" p-5 ">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-zinc-600">Requirements</span>
 
-              <StatCard
-                icon={MessageSquare}
-                label="Questions"
-                value={questions.length}
-              />
+                  <Target size={15} className="text-zinc-500" />
+                </div>
 
-              <StatCard
-                icon={Layers3}
-                label="Flashcards"
-                value={flashcards.length}
-              />
-            </section>
+                <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-zinc-200">
+                  {requirements.length}
+                </p>
+
+                <p className="mt-2 text-xs text-zinc-500">
+                  Role requirements analyzed
+                </p>
+              </div>
+
+              <Link
+                href={`/kits/${kitId}/questions`}
+                className="group bg-[#000000] p-5 transition-colors hover:bg-white/[0.02]"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-zinc-600">Questions</span>
+
+                  <MessageSquare
+                    size={15}
+                    className="text-zinc-500 transition-colors group-hover:text-zinc-300"
+                  />
+                </div>
+
+                <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-zinc-200">
+                  {questions.length}
+                </p>
+
+                <p className="mt-2 text-xs text-zinc-500">
+                  Browse interview questions
+                </p>
+              </Link>
+
+              <Link
+                href={`/kits/${kitId}/flashcards`}
+                className="group bg-[#000000] p-5 transition-colors hover:bg-white/[0.02]"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-zinc-600">Flashcards</span>
+
+                  <Layers3
+                    size={15}
+                    className="text-zinc-500 transition-colors group-hover:text-zinc-300"
+                  />
+                </div>
+
+                <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-zinc-200">
+                  {flashcards.length}
+                </p>
+
+                <p className="mt-2 text-xs text-zinc-500">
+                  Review key concepts
+                </p>
+              </Link>
+            </div>
 
             {/* Requirements */}
-            <section className="rounded-lg border border-white/[0.07] bg-[#0b0c0e]">
-              <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4">
+            <div className="rounded-lg border border-white/20 bg-[#000000]">
+              <div className="flex items-center justify-between border-b border-white/20 px-5 py-4">
                 <div>
                   <h2 className="text-sm font-medium text-zinc-200">
                     Requirements
@@ -388,7 +473,7 @@ export default function KitPage() {
                   </p>
                 </div>
 
-                <span className="text-xs text-zinc-700">
+                <span className="text-xs text-zinc-500">
                   {requirements.length} total
                 </span>
               </div>
@@ -408,22 +493,22 @@ export default function KitPage() {
                     </div>
 
                     <div className="flex shrink-0 items-center gap-2">
-                      <span className="rounded border border-white/[0.06] px-2 py-1 text-[10px] capitalize text-zinc-600">
+                      <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-600">
                         {requirement.kind}
                       </span>
 
-                      <span className="rounded border border-white/[0.06] px-2 py-1 text-[10px] text-zinc-600">
+                      <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-600">
                         {requirement.priority}
                       </span>
                     </div>
                   </div>
                 ))}
               </div>
-            </section>
+            </div>
 
             {/* Preparation plan */}
-            <section className="rounded-lg border border-white/[0.07] bg-[#0b0c0e]">
-              <div className="flex items-center justify-between border-b border-white/[0.07] px-5 py-4">
+            <div className="rounded-lg border border-white/20 bg-[#000000]">
+              <div className="flex items-center justify-between border-b border-white/20 px-5 py-4">
                 <div>
                   <h2 className="text-sm font-medium text-zinc-200">
                     Preparation plan
@@ -435,7 +520,7 @@ export default function KitPage() {
                   </p>
                 </div>
 
-                <CalendarDays size={15} className="text-zinc-700" />
+                <CalendarDays size={15} className="text-zinc-500" />
               </div>
 
               <div className="divide-y divide-white/[0.05]">
@@ -458,12 +543,12 @@ export default function KitPage() {
                         {day.minutes} min
                       </span>
 
-                      <ArrowRight size={14} className="text-zinc-700" />
+                      <ArrowRight size={14} className="text-zinc-500" />
                     </div>
                   </Link>
                 ))}
               </div>
-            </section>
+            </div>
           </main>
         </div>
       </div>
@@ -473,16 +558,17 @@ export default function KitPage() {
   /*
    * GENERATING
    */
-  const activeIndex = Math.max(
-    0,
-    steps.findIndex((step) => step.id === kit.progress_step),
-  );
+  const activeIndex = steps.findIndex((step) => step.id === kit.progress_step);
 
+  const resolvedActiveIndex = activeIndex >= 0 ? activeIndex : 0;
+  const progressPercent = Math.round(
+    ((resolvedActiveIndex + 1) / steps.length) * 100,
+  );
   return (
     <div className="flex min-h-[75vh] items-center justify-center">
       <div className="w-full max-w-xl">
         <div className="mb-10 text-center">
-          <div className="mx-auto mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03]">
+          <div className="mx-auto mb-5 flex h-11 w-11 items-center justify-center rounded-xl border border-white/20 bg-white/[0.03]">
             <Sparkles size={18} className="text-zinc-300" />
           </div>
 
@@ -495,12 +581,29 @@ export default function KitPage() {
           <p className="mt-2 text-sm text-zinc-600">{kit.role}</p>
         </div>
 
-        <div className="rounded-xl border border-white/[0.07] bg-[#0b0c0e] p-5">
+        <div className="rounded-xl border border-white/20 bg-[#000000] p-5">
+          <div className="mb-5">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-[11px] text-zinc-600">
+                Generation progress
+              </span>
+
+              <span className="text-[11px] font-medium text-zinc-300">
+                {progressPercent}%
+              </span>
+            </div>
+
+            <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
+              <div
+                className="h-full rounded-full bg-white transition-all duration-300"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
           <div className="space-y-1">
             {steps.map((step, index) => {
-              const completed = index < activeIndex;
-
-              const active = index === activeIndex;
+              const completed = index < resolvedActiveIndex;
+              const active = index === resolvedActiveIndex;
 
               return (
                 <div
@@ -516,10 +619,7 @@ export default function KitPage() {
                         <Check size={12} />
                       </div>
                     ) : active ? (
-                      <Loader2
-                        size={16}
-                        className="animate-spin text-zinc-300"
-                      />
+                      <LoadingSpinner size="sm" />
                     ) : (
                       <Circle size={15} className="text-zinc-800" />
                     )}
@@ -528,7 +628,7 @@ export default function KitPage() {
                   <span
                     className={[
                       "text-sm",
-                      active || completed ? "text-zinc-300" : "text-zinc-700",
+                      active || completed ? "text-zinc-300" : "text-zinc-500",
                     ].join(" ")}
                   >
                     {step.label}
@@ -538,8 +638,8 @@ export default function KitPage() {
             })}
           </div>
 
-          <div className="mt-5 border-t border-white/[0.06] pt-4">
-            <p className="text-center text-[11px] text-zinc-700">
+          <div className="mt-5 border-t border-white/20 pt-4">
+            <p className="text-center text-[11px] text-zinc-500">
               This can take a little while while we research the company and
               build your preparation.
             </p>
@@ -560,11 +660,11 @@ function StatCard({
   value: number;
 }) {
   return (
-    <div className="bg-[#0b0c0e] p-5">
+    <div className="bg-[#000000] p-5">
       <div className="flex items-center justify-between">
         <span className="text-xs text-zinc-600">{label}</span>
 
-        <Icon size={15} className="text-zinc-700" />
+        <Icon size={15} className="text-zinc-500" />
       </div>
 
       <p className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-zinc-200">

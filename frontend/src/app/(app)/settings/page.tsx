@@ -49,13 +49,13 @@ export default function SettingsPage() {
           Settings
         </h1>
 
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-sm text-zinc-300">
           Manage your Prepora account and session.
         </p>
       </header>
 
-      <section className="rounded-lg border border-white/[0.07] bg-[#0b0c0e]">
-        <div className="border-b border-white/[0.07] px-5 py-4">
+      <section className="rounded-lg border border-white/20 bg-[#000000]">
+        <div className="border-b border-white/20 px-5 py-4">
           <h2 className="text-sm font-medium text-zinc-200">Account</h2>
 
           <p className="mt-1 text-xs text-zinc-600">
@@ -65,12 +65,12 @@ export default function SettingsPage() {
 
         <div className="divide-y divide-white/[0.05]">
           <div className="flex items-center gap-4 px-5 py-5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/[0.07] bg-white/[0.02] text-zinc-600">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/20 bg-white/[0.02] text-zinc-600">
               <User size={15} />
             </div>
 
             <div className="min-w-0">
-              <p className="text-xs text-zinc-700">Account email</p>
+              <p className="text-xs text-zinc-500">Account email</p>
 
               <p className="mt-1 truncate text-sm text-zinc-300">
                 {loading ? "Loading..." : email || "Unknown"}
@@ -79,12 +79,12 @@ export default function SettingsPage() {
           </div>
 
           <div className="flex items-center gap-4 px-5 py-5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/[0.07] bg-white/[0.02] text-zinc-600">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/20 bg-white/[0.02] text-zinc-600">
               <Mail size={15} />
             </div>
 
             <div>
-              <p className="text-xs text-zinc-700">Authentication</p>
+              <p className="text-xs text-zinc-500">Authentication</p>
 
               <p className="mt-1 flex items-center gap-2 text-sm text-zinc-400">
                 <Check size={13} />
@@ -95,7 +95,7 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <section className="rounded-lg border border-red-500/[0.08] bg-[#0b0c0e]">
+      <section className="rounded-lg border border-red-500/[0.08] bg-[#000000]">
         <div className="border-b border-red-500/[0.06] px-5 py-4">
           <h2 className="text-sm font-medium text-zinc-200">Session</h2>
 
@@ -108,7 +108,7 @@ export default function SettingsPage() {
           <div>
             <p className="text-sm text-zinc-400">Sign out</p>
 
-            <p className="mt-1 text-xs text-zinc-700">
+            <p className="mt-1 text-xs text-zinc-500">
               You can sign back in at any time.
             </p>
           </div>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
             type="button"
             onClick={handleSignOut}
             disabled={signingOut}
-            className="flex shrink-0 items-center gap-2 rounded-md border border-white/[0.08] px-3 py-2 text-xs text-zinc-500 transition-colors hover:border-red-500/[0.15] hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex shrink-0 items-center gap-2 rounded-md border border-white/20 px-3 py-2 text-xs text-zinc-300 transition-colors hover:border-red-500/[0.15] hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <LogOut size={13} />
 

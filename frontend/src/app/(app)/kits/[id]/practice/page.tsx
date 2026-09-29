@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { ErrorState } from "@/components/ui/error-state";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   ArrowRight,
@@ -92,7 +94,9 @@ const confidenceOptions: {
 export default function PracticePage() {
   const params = useParams();
   const kitId = params.id as string;
+  const searchParams = useSearchParams();
 
+  const requestedQuestionId = searchParams.get("question");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [practiceState, setPracticeState] = useState<
     Record<string, Confidence>
@@ -101,36 +105,52 @@ export default function PracticePage() {
 
   const [showAnswer, setShowAnswer] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   const loadPractice = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
     try {
       const [kitResponse, progressResponse] = await Promise.all([
         apiRequest<KitResponse>(`/api/kits/${kitId}`),
         apiRequest<ProgressResponse>(`/api/kits/${kitId}/progress`),
       ]);
 
-      setQuestions(kitResponse.kit.kit?.questions ?? []);
+      const loadedQuestions = kitResponse.kit.kit?.questions ?? [];
 
-      const restoredState: Record<string, Confidence> = {};
+      const progressMap: Record<string, Confidence> = {};
 
-      progressResponse.progress
-        .filter(
-          (item) =>
-            item.item_type === "question" && item.confidence_rating !== null,
-        )
-        .forEach((item) => {
-          const confidence =
-            item.confidence_rating === 1
-              ? "low"
-              : item.confidence_rating === 2
-                ? "medium"
-                : "high";
+      for (const item of progressResponse.progress) {
+        if (item.item_type !== "question" || item.confidence_rating === null) {
+          continue;
+        }
 
-          restoredState[item.item_id] = confidence;
-        });
+        if (item.confidence_rating === 1) {
+          progressMap[item.item_id] = "low";
+        } else if (item.confidence_rating === 2) {
+          progressMap[item.item_id] = "medium";
+        } else if (item.confidence_rating === 3) {
+          progressMap[item.item_id] = "high";
+        }
+      }
 
-      setPracticeState(restoredState);
+      setQuestions(loadedQuestions);
+      setPracticeState(progressMap);
+
+      const requestedIndex = requestedQuestionId
+        ? loadedQuestions.findIndex(
+            (question) => question.id === requestedQuestionId,
+          )
+        : -1;
+
+      setCurrentIndex(requestedIndex >= 0 ? requestedIndex : 0);
+      setShowAnswer(false);
+    } catch (err) {
+      console.error("Failed to load practice:", err);
+
+      setError(err instanceof Error ? err.message : "Unable to load practice.");
     } finally {
       setLoading(false);
     }
@@ -222,24 +242,45 @@ export default function PracticePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-700 border-t-zinc-200" />
+      <div className="flex min-h-[70vh] items-center justify-center">
+        <LoadingSpinner size="md" />
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div className="flex min-h-[70vh] items-center justify-center">
+        <div className="w-full max-w-xl">
+          <ErrorState
+            title="Unable to load practice"
+            description={error}
+            action={
+              <button
+                type="button"
+                onClick={loadPractice}
+                className="rounded-md bg-white px-4 py-2 text-xs font-medium text-black transition-colors hover:bg-zinc-200"
+              >
+                Try again
+              </button>
+            }
+          />
+        </div>
+      </div>
+    );
+  }
   if (questions.length === 0) {
     return (
       <div className="grid gap-6 lg:grid-cols-[180px_minmax(0,1fr)]">
         <KitSidebar kitId={kitId} />
 
         <main className="min-w-0">
-          <div className="rounded-lg border border-dashed border-white/[0.08] py-20 text-center">
-            <p className="text-sm text-zinc-500">
+          <div className="rounded-lg border border-dashed border-white/20 py-20 text-center">
+            <p className="text-sm text-zinc-300">
               No practice questions are available yet.
             </p>
 
-            <p className="mt-2 text-xs text-zinc-700">
+            <p className="mt-2 text-xs text-zinc-500">
               Questions will appear here once they are generated for this kit.
             </p>
           </div>
@@ -262,9 +303,9 @@ export default function PracticePage() {
                 Practice
               </h1>
 
-              <p className="mt-2 text-sm text-zinc-500">
-                Practice one question at a time and track how confident you
-                feel.
+              <p className="mt-2 text-sm text-zinc-300">
+                Practice one question at a time. Rate your confidence to track
+                your preparation.
               </p>
             </div>
 
@@ -274,13 +315,13 @@ export default function PracticePage() {
               className="flex w-fit items-center gap-2 text-xs text-zinc-600 transition-colors hover:text-zinc-300"
             >
               <RotateCcw size={13} />
-              Reset position
+              Start from beginning
             </button>
           </div>
         </header>
 
-        <section className="rounded-lg border border-white/[0.07] bg-[#0b0c0e]">
-          <div className="border-b border-white/[0.06] px-5 py-4">
+        <section className="rounded-lg border border-white/20 bg-[#000000]">
+          <div className="border-b border-white/20 px-5 py-4">
             <div className="flex items-center justify-between">
               <div className="text-xs text-zinc-600">
                 Question{" "}
@@ -304,20 +345,20 @@ export default function PracticePage() {
 
           <div className="px-5 py-8 sm:px-8 sm:py-10">
             <div className="mb-6 flex flex-wrap items-center gap-2">
-              <span className="rounded border border-white/[0.06] px-2 py-1 text-[10px] capitalize text-zinc-600">
+              <span className="rounded border border-white/20 px-2 py-1 text-xs capitalize text-zinc-600">
                 {currentQuestion.category}
               </span>
 
               <Difficulty value={currentQuestion.difficulty} />
 
               {currentQuestion.pinned && (
-                <span className="rounded border border-white/[0.06] px-2 py-1 text-[10px] text-zinc-600">
+                <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-600">
                   Pinned
                 </span>
               )}
 
               {practiceState[currentQuestion.id] && (
-                <span className="rounded border border-white/[0.06] px-2 py-1 text-[10px] text-zinc-600">
+                <span className="rounded border border-white/20 px-2 py-1 text-xs text-zinc-600">
                   {practiceState[currentQuestion.id] === "high"
                     ? "Confident"
                     : practiceState[currentQuestion.id] === "medium"
@@ -335,7 +376,7 @@ export default function PracticePage() {
               <button
                 type="button"
                 onClick={() => setShowAnswer((previous) => !previous)}
-                className="flex items-center gap-2 text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+                className="flex items-center gap-2 text-xs text-zinc-300 transition-colors hover:text-zinc-300"
               >
                 <ChevronDown
                   size={14}
@@ -349,12 +390,12 @@ export default function PracticePage() {
               </button>
 
               {showAnswer && (
-                <div className="mt-4 rounded-md border border-white/[0.06] bg-white/[0.02] p-5">
-                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-700">
+                <div className="mt-4 rounded-md border border-white/20 bg-white/[0.02] p-5">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
                     Answer outline
                   </p>
 
-                  <p className="max-w-3xl text-sm leading-7 text-zinc-500">
+                  <p className="max-w-3xl text-sm leading-7 text-zinc-300">
                     {currentQuestion.answer_outline}
                   </p>
                 </div>
@@ -362,14 +403,14 @@ export default function PracticePage() {
             </div>
           </div>
 
-          <div className="border-t border-white/[0.06] px-5 py-5 sm:px-8">
+          <div className="border-t border-white/20 px-5 py-5 sm:px-8">
             <div className="flex items-center justify-between">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-700">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
                 How confident are you?
               </p>
 
               {saving && (
-                <span className="text-[10px] text-zinc-700">Saving...</span>
+                <span className="text-xs text-zinc-500">Saving...</span>
               )}
             </div>
 
@@ -388,7 +429,7 @@ export default function PracticePage() {
                       "flex items-center gap-2 rounded-md border px-3 py-2 text-xs transition-colors",
                       selected
                         ? "border-white/[0.14] bg-white/[0.08] text-zinc-200"
-                        : "border-white/[0.06] text-zinc-600 hover:border-white/[0.1] hover:text-zinc-400",
+                        : "border-white/20 text-zinc-600 hover:border-white/[0.1] hover:text-zinc-400",
                       "disabled:pointer-events-none disabled:opacity-50",
                     ].join(" ")}
                   >
@@ -400,12 +441,12 @@ export default function PracticePage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between border-t border-white/[0.06] px-5 py-4 sm:px-8">
+          <div className="flex items-center justify-between border-t border-white/20 px-5 py-4 sm:px-8">
             <button
               type="button"
               onClick={previousQuestion}
               disabled={currentIndex === 0}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-500 transition-colors hover:bg-white/[0.04] hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-30"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-300 transition-colors hover:bg-white/[0.04] hover:text-zinc-300 disabled:pointer-events-none disabled:opacity-30"
             >
               <ArrowLeft size={14} />
               Previous
@@ -453,8 +494,8 @@ function Difficulty({ value }: { value: 1 | 2 | 3 }) {
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-lg border border-white/[0.07] bg-[#0b0c0e] px-4 py-4">
-      <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-700">
+    <div className="rounded-lg border border-white/20 bg-[#000000] px-4 py-4">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
         {label}
       </p>
 

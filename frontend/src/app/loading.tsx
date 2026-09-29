@@ -8,7 +8,7 @@ export default function Loading() {
 
         <div className="text-center">
           <p className="text-sm font-medium text-zinc-200">Loading Prepora</p>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-zinc-300">
             Preparing your workspace...
           </p>
         </div>

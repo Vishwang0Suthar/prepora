@@ -44,12 +44,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       <aside
         className={[
           "fixed inset-y-0 left-0 z-50 flex w-[248px] flex-col",
-          "border-r border-white/[0.07] bg-[#0b0c0e]",
-          "transition-transform duration-200 ease-out",
+          "border-r border-white/20 bg-[#000000]",
+          "transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         ].join(" ")}
       >
-        <div className="flex h-16 items-center justify-between border-b border-white/[0.07] px-5">
+        <div className="flex h-16 items-center justify-between border-b border-white/20 px-5">
           <Link
             href="/dashboard"
             onClick={onClose}
@@ -67,7 +67,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md p-1.5 text-zinc-500 hover:bg-white/[0.05] hover:text-zinc-200 lg:hidden"
+            className="rounded-md p-1.5 text-zinc-300 hover:bg-white/[0.05] hover:text-zinc-200 lg:hidden"
             aria-label="Close navigation"
           >
             <X size={17} />
@@ -75,7 +75,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         </div>
 
         <nav className="flex-1 px-3 py-5">
-          <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.12em] text-zinc-600">
+          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-600">
             Workspace
           </p>
 
@@ -98,7 +98,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                     "text-[13px] transition-colors",
                     active
                       ? "bg-white/[0.08] text-white"
-                      : "text-zinc-500 hover:bg-white/[0.04] hover:text-zinc-200",
+                      : "text-zinc-300 hover:bg-white/[0.04] hover:text-zinc-200",
                   ].join(" ")}
                 >
                   <Icon size={16} strokeWidth={1.8} />
@@ -109,8 +109,8 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
         </nav>
 
-        <div className="border-t border-white/[0.07] p-4">
-          <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+        <div className="border-t border-white/20 p-4">
+          <div className="rounded-lg border border-white/20 bg-white/[0.02] p-3">
             <p className="text-xs font-medium text-zinc-300">
               Interview preparation
             </p>

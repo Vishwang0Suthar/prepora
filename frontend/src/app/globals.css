@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 ::selection {
-  background: #0047ab;
-  color: #f4c300;
+  background: #ffff;
+  color: #000000;
 }
 
 html {
@@ -10,8 +10,27 @@ html {
 
 }
 
+@keyframes grid-glow {
+
+  0%,
+  100% {
+    opacity: 0.06;
+    filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0));
+  }
+
+  50% {
+    opacity: 0.20;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.18));
+  }
+}
+
+.animate-grid-glow {
+  animation: grid-glow 5s ease-in-out infinite;
+}
+
 body {
-  font-family: var(--font-gill-sans), sans-serif;
+  background: #000000;
+  color: white;
 }
 
 header,
