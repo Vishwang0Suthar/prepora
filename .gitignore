@@ -1,0 +1,52 @@
+# ─── Dependencies ───────────────────────────────
+node_modules/
+.pnp
+.pnp.js
+
+# ─── Build output ───────────────────────────────
+dist/
+build/
+.next/
+out/
+
+# ─── Environment files (never commit secrets) ───
+.env
+.env.local
+.env.*.local
+backend/.env
+backend/.env.local
+frontend/.env
+frontend/.env.local
+
+# ─── Logs ────────────────────────────────────────
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# ─── Editor / OS ─────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ─── TypeScript build info ──────────────────────
+*.tsbuildinfo
+next-env.d.ts
+
+# ─── Backend: local test artifacts ──────────────
+# Keep cases.json (reference batch-input example) but
+# ignore generated result/output files and ad-hoc test data.
+backend/kits.json
+backend/*-result.json
+backend/cases-test.json
+backend/intants-result.json
+backend/result-test.json
+
+# Loose debug script — move into backend/scripts/ instead
+# of relying on this ignore rule long-term.
+backend/test-tavily.ts
+
+# ─── Coverage / test output ──────────────────────
+coverage/
+.nyc_output/

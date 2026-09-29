@@ -1,0 +1,11 @@
+[
+  {
+    "id": "stripe-software-engineer",
+    "company": "Stripe",
+    "company_url": "https://stripe.com",
+    "role": "Software Engineer",
+    "location": "Remote",
+    "jd_text": "We are looking for a Software Engineer to design, build, test, and maintain reliable software systems. The role requires strong programming skills, experience with distributed systems and microservices, REST APIs, databases, testing, debugging, scalability, and collaboration with engineering teams.",
+    "days_available": 5
+  }
+]
