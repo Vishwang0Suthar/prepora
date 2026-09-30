@@ -111,7 +111,7 @@ kit to be edited and practised inside the application.
                                                   `robots.txt` before
                                                   crawling pages.
 
-  Research search         **SearXNG provider**    Used to search public
+  Research search         **Tavily API**    Used to search public
                                                   web discussion about
                                                   company interview
                                                   processes without
@@ -168,7 +168,7 @@ when the choice is documented.
       │ PostgreSQL  │        │ Pipeline      │         │ GroqProvider │
       │ + Auth      │        │ Axios/Cheerio │         │              │
       └─────────────┘        │ robots-parser │         └──────┬───────┘
-                             │ SearXNG       │                │
+                             │ Tavily        │                │
                              └───────┬───────┘                │
                                      │                        │
                                      └──────────┬─────────────┘
@@ -180,7 +180,7 @@ when the choice is documented.
                                      │ Questions          │
                                      │ Flashcards         │
                                      │ Coverage           │
-                                     │ Schedule           │
+                                     │ Schedule            │
                                      │ Validation         │
                                      └────────────────────┘
 ```
@@ -210,7 +210,7 @@ scraper/
 └── URL validation
 
 research/
-└── SearXNG search provider
+└── Tavily search provider
 
 llm/
 └── Groq provider
@@ -925,7 +925,7 @@ maintaining a separate implementation.
 -   npm
 -   Supabase project
 -   Groq API credentials
--   Configured research/search provider
+-   Tavily API credentials
 
 ### 1. Clone the repository
 
@@ -984,7 +984,7 @@ SUPABASE_JWKS_URL=...
 GROQ_API_KEY=...
 ```
 
-Add any configured search-provider variables required by the active
+Configure the Tavily API credentials required by the active
 research provider.
 
 Never commit `.env.local` or any secret key.
@@ -1029,7 +1029,7 @@ Configure:
 
 -   Supabase credentials
 -   Groq credentials
--   Research provider configuration
+-   Tavily API configuration
 -   CORS allowed frontend origin
 
 The frontend and backend use separate origins, so the Express API
@@ -1041,7 +1041,7 @@ restricts CORS to the deployed frontend origin.
 -   [ ] Backend publicly reachable
 -   [ ] Supabase credentials configured
 -   [ ] LLM credentials configured
--   [ ] Search provider configured
+-   [ ] Tavily configured
 -   [ ] CORS configured
 -   [ ] Production URL validation enabled
 -   [ ] Secrets excluded from Git
@@ -1217,7 +1217,7 @@ The implementation covers the core Prepora workflow end-to-end:
 
   `robots.txt`                        `robots-parser`
 
-  Public interview research           Search provider abstraction
+  Public interview research           Tavily API search provider
 
   Sequenced generation                Dedicated generation services
 
@@ -1261,7 +1261,7 @@ Before deploying a production build:
 - [ ] Backend publicly reachable
 - [ ] Supabase credentials configured
 - [ ] LLM credentials configured
-- [ ] Search provider configured
+- [ ] Tavily configured
 - [ ] CORS configured
 - [ ] Production URL validation enabled
 - [ ] Secrets excluded from Git
