@@ -168,7 +168,7 @@ when the choice is documented.
       │ PostgreSQL  │        │ Pipeline      │         │ GroqProvider │
       │ + Auth      │        │ Axios/Cheerio │         │              │
       └─────────────┘        │ robots-parser │         └──────┬───────┘
-                             │ SearXNG        │                │
+                             │ SearXNG       │                │
                              └───────┬───────┘                │
                                      │                        │
                                      └──────────┬─────────────┘
@@ -180,7 +180,7 @@ when the choice is documented.
                                      │ Questions          │
                                      │ Flashcards         │
                                      │ Coverage           │
-                                     │ Schedule            │
+                                     │ Schedule           │
                                      │ Validation         │
                                      └────────────────────┘
 ```
