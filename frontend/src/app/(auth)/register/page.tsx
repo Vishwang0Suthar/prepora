@@ -99,7 +99,9 @@ export default function RegisterPage() {
       }
 
       setRegistered(true);
-      setSuccess("Account created. Please head to sign in.");
+      setSuccess(
+        `Account created. Please check ${result.data.email}'s inbox to confirm your email address.`,
+      );
     } catch (error) {
       console.error("Registration failed:", error);
 

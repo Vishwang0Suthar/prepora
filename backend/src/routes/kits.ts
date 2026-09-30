@@ -556,6 +556,7 @@ router.patch(
     }
   },
 );
+
 /**
  * PATCH /api/kits/:id/flashcards/:flashcardId
  */
